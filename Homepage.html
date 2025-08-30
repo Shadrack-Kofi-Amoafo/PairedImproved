@@ -40,6 +40,7 @@
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
     <div class="orb orb3"></div>
+
   </div>
   
   <!-- Header + composer injected by shared-ui.js -->
@@ -905,6 +906,61 @@ ${mediaHTML?`<div class='mt-3 bg-black/30 media-block'>${mediaHTML}</div>`:''}
       closeBtn.addEventListener('click', close);
       modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
       document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !modal.classList.contains('hidden')) close(); });
+    })();
+    // Ad modal logic (See Details for Campus Bites etc.)
+    (function(){
+      const modal=document.getElementById('adModal');
+      if(!modal) return;
+      const titleEl=document.getElementById('adTitle');
+      const imgEl=document.getElementById('adImage');
+      const tagEl=document.getElementById('adTag');
+      const bodyEl=document.getElementById('adBody');
+      const priceEl=document.getElementById('adPrice');
+      const locationEl=document.getElementById('adLocation');
+      const contactsEl=document.getElementById('adContacts');
+      const actionBtn=document.getElementById('adAction');
+      const closeBtns=[document.getElementById('closeAd'), document.getElementById('adCloseBottom')];
+      const shareBtn=document.getElementById('adShare');
+      function parse(btn){
+        const raw=btn.getAttribute('data-ad'); if(!raw) return {}; try { return JSON.parse(raw); } catch(e){ try { return Function('return ('+raw+')')(); } catch(_){ return {}; } }
+      }
+      function buildContactItem(raw){
+        const c=(raw||'').trim(); if(!c) return null; let type='text', href='#', icon='info';
+        if(/^(\+?\d[\d\s-]{5,})$/.test(c)){ type='phone'; href='tel:'+c.replace(/[^+\d]/g,''); icon='phone'; }
+        else if(/@/.test(c)){ type='mail'; href='mailto:'+c; icon='mail'; }
+        else if(/^https?:\/\//i.test(c)){ type='link'; href=c; icon='external-link'; }
+        const row=document.createElement('div'); row.className='flex items-center justify-between gap-2 bg-black/30 rounded px-2 py-1';
+        row.innerHTML=`<a href="${href}" class="flex items-center gap-2 text-xs hover:underline" ${type==='link'? 'target="_blank" rel="noopener"':''}><i data-lucide="${icon}" class="w-3.5 h-3.5"></i><span class="truncate max-w-[140px]">${c}</span></a><button data-copy="${c}" class="p-1 rounded hover:bg-white/10 text-gray-300"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>`;
+        return row;
+      }
+      function renderContacts(list){
+        contactsEl.innerHTML='';
+        (list||[]).map(buildContactItem).filter(Boolean).forEach(el=> contactsEl.appendChild(el));
+        if(window.lucide) lucide.createIcons();
+      }
+      function open(data){
+        titleEl.textContent=data.title||'Ad';
+        imgEl.style.backgroundImage=`url('${data.image||''}')`;
+        tagEl.textContent=data.tagline||'';
+        bodyEl.textContent=data.body||'';
+        priceEl.textContent=data.price||'';
+        locationEl.textContent=data.location||'';
+        renderContacts(Array.isArray(data.contact)? data.contact : Array.isArray(data.contacts)? data.contacts : []);
+        if(data.actionLink){ actionBtn.classList.remove('hidden'); actionBtn.dataset.href=data.actionLink; actionBtn.firstElementChild?.classList.add('-rotate-45'); }
+        else { actionBtn.classList.add('hidden'); delete actionBtn.dataset.href; }
+        modal.classList.remove('hidden'); document.body.classList.add('no-scroll'); if(window.lucide) lucide.createIcons();
+      }
+      function close(){ modal.classList.add('hidden'); document.body.classList.remove('no-scroll'); }
+      document.addEventListener('click', e=>{
+        const btn=e.target.closest('.ad-see-details');
+        if(btn){ const data=parse(btn); if(Object.keys(data).length){ open(data); } else { btn.disabled=true; const old=btn.textContent; btn.textContent='Data error'; setTimeout(()=>{ btn.disabled=false; btn.textContent=old; },1400); } }
+        if(e.target===modal) close();
+        const copyBtn=e.target.closest('[data-copy]');
+        if(copyBtn){ const val=copyBtn.getAttribute('data-copy'); navigator.clipboard?.writeText(val); copyBtn.innerHTML='<i data-lucide="check" class="w-3.5 h-3.5 text-green-400"></i>'; setTimeout(()=>{ copyBtn.innerHTML='<i data-lucide="copy" class="w-3.5 h-3.5"></i>'; if(window.lucide) lucide.createIcons(); },1200); if(window.lucide) lucide.createIcons(); }
+      });
+      actionBtn?.addEventListener('click', ()=>{ const href=actionBtn.dataset.href; if(href){ if(href.startsWith('#')){ location.hash=href.slice(1); } else window.open(href, '_blank'); }});
+      closeBtns.forEach(b=> b?.addEventListener('click', close));
+      shareBtn?.addEventListener('click', ()=>{ navigator.clipboard?.writeText(window.location.href.split('#')[0]+'#ad:'+encodeURIComponent(titleEl.textContent)); shareBtn.textContent='Copied'; setTimeout(()=> shareBtn.innerHTML='<i data-lucide="share-2" class="w-4 h-4"></i>Share',1500); });
     })();
     // Post options (edit/delete) via ellipsis buttons
     (function(){
