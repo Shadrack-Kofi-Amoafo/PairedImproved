@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings • Paired</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <script>window.PAGE_ACTIVE='profile';</script>
+  <script src="shared-ui.js"></script>
+  <style>
+    .orb-lemon {
+      background: radial-gradient(circle, rgba(255,255,0,0.35) 0%, rgba(0,0,0,0) 70%);
+      filter: blur(60px);
+    }
+    .orb-violet {
+      background: radial-gradient(circle, rgba(186,85,211,0.35) 0%, rgba(0,0,0,0) 70%);
+      filter: blur(60px);
+    }
+    .switch {
+      position: relative; display:inline-block; width:46px; height:24px;
+    }
+    .switch input {opacity:0;width:0;height:0;}
+    .slider {
+      position:absolute; cursor:pointer; inset:0; background:#475569; transition:.25s; border-radius:999px;
+    }
+    .slider:before {
+      position:absolute; content:""; height:18px; width:18px; left:3px; top:3px; background:white; border-radius:50%; transition:.25s;
+    }
+    input:checked + .slider { background:#16a34a; }
+    input:checked + .slider:before { transform:translateX(22px); }
+    .no-select { user-select:none; }
+  </style>
+</head>
+<body class="bg-black text-gray-100 min-h-full relative flex justify-center overflow-x-hidden">
+  <!-- Background Orbs -->
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="absolute top-10 left-10 w-72 h-72 orb-lemon rounded-full"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 orb-violet rounded-full"></div>
+  </div>
+
+  <div class="w-full max-w-sm relative z-10" data-adjust-offset>
+  <div class="px-4 pt-4 flex items-center gap-3 text-sm font-semibold">
+    <span class="text-lg">Settings</span>
+    <button id="resetAll" class="ml-auto text-[11px] px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Reset</button>
+  </div>
+
+  <!-- Content -->
+  <main class="pt-4 pb-24 px-4 space-y-6">
+    <!-- Account -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300 mb-4">Account</h2>
+      <div class="space-y-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="font-medium">Username</p>
+            <p class="text-xs text-gray-400">@yourhandle</p>
+          </div>
+          <button class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Edit</button>
+        </div>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="font-medium">Email</p>
+            <p class="text-xs text-gray-400">user@example.com</p>
+          </div>
+          <button class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Change</button>
+        </div>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="font-medium">Phone</p>
+            <p class="text-xs text-gray-400">Not added</p>
+          </div>
+          <button class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Add</button>
+        </div>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="font-medium">Password</p>
+            <p class="text-xs text-gray-400">Last changed 3 months ago</p>
+          </div>
+          <button class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Update</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy & Security -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Privacy & Security</h2>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Private Account</p>
+          <p class="text-xs text-gray-400">Only approved followers see your content</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="privateAccount">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Two-Factor Authentication</p>
+          <p class="text-xs text-gray-400">Add extra login protection</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="twoFactor">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Show Online Status</p>
+          <p class="text-xs text-gray-400">Let friends know when you are active</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="onlineStatus" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="font-medium">Blocked Accounts</p>
+          <p class="text-xs text-gray-400">Manage users you have blocked</p>
+        </div>
+        <button class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">View</button>
+      </div>
+    </section>
+
+    <!-- Notifications -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Notifications</h2>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Push Notifications</p>
+          <p class="text-xs text-gray-400">General alerts & updates</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="pushNotifications" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Email Updates</p>
+          <p class="text-xs text-gray-400">Occasional product news</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="emailUpdates">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Sound & Vibration</p>
+          <p class="text-xs text-gray-400">Device feedback for alerts</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="alertSounds" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Appearance & Media -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Appearance & Media</h2>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Dark Mode</p>
+          <p class="text-xs text-gray-400">Reduce glare & save battery</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="darkMode">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Autoplay Videos</p>
+          <p class="text-xs text-gray-400">Play videos automatically</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="autoplayVideos" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="font-medium">Data Saver</p>
+          <p class="text-xs text-gray-400">Lower quality on cellular</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-setting="dataSaver">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Data & Storage -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Data & Storage</h2>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="font-medium">Cached Data</p>
+          <p class="text-xs text-gray-400">Temporary files for faster loading</p>
+        </div>
+        <button id="clearCache" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Clear</button>
+      </div>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="font-medium">Download Your Data</p>
+          <p class="text-xs text-gray-400">Request an export archive</p>
+        </div>
+        <button class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Request</button>
+      </div>
+    </section>
+
+    <!-- Help & About -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Help & Support</h2>
+      <div class="flex items-center justify-between">
+        <p class="font-medium">Help Center</p>
+        <a href="#" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Open</a>
+      </div>
+      <div class="flex items-center justify-between">
+        <p class="font-medium">Report a Problem</p>
+        <a href="#" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Start</a>
+      </div>
+      <div class="flex items-center justify-between">
+        <p class="font-medium">Community Guidelines</p>
+        <a href="#" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">View</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-3">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">About</h2>
+      <p class="text-xs text-gray-400 leading-relaxed">
+        Paired helps you connect and build meaningful friendships. Manage your privacy, security,
+        and personalization preferences here.
+      </p>
+      <p class="text-[10px] text-gray-500">Version 0.1.0 • © 2025 Paired</p>
+    </section>
+
+    <!-- Logout -->
+    <div class="pt-2">
+      <button id="logoutBtn" class="w-full py-3 rounded-xl font-medium bg-red-600/80 hover:bg-red-600 transition shadow-lg shadow-red-600/20">
+        Log Out
+      </button>
+    </div>    <!-- ...existing code... -->
+        <!-- Help & About -->
+        <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Help & Support</h2>
+          <div class="flex items-center justify-between">
+            <p class="font-medium">Help Center</p>
+            <a href="#" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Open</a>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="font-medium">Report a Problem</p>
+            <a href="#" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Start</a>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="font-medium">Community Guidelines</p>
+            <a href="#" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">View</a>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="font-medium">Profile Settings</p>
+            <a href="profileSetting.html" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Open</a>
+          </div>
+        </section>
+    
+        <!-- About section (removed bio) -->
+        <!-- (Removed bio-related content as requested) -->
+    <!-- ...existing code... -->
+  </main>
+  </div>
+
+  <script>
+    const settingInputs = document.querySelectorAll('input[data-setting]');
+    const STORAGE_KEY = 'paired.settings';
+    function loadSettings() {
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        settingInputs.forEach(i => {
+          if (data[i.dataset.setting] !== undefined) {
+            i.checked = !!data[i.dataset.setting];
+          }
+        });
+        window.PairedTheme?.apply();
+      } catch(e) { console.warn(e); }
+    }
+    function saveSettings(evt) {
+      const data = {};
+      settingInputs.forEach(i => data[i.dataset.setting] = i.checked);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      if (evt && evt.target && evt.target.dataset.setting === 'darkMode') {
+        window.PairedTheme?.setDark(evt.target.checked);
+      }
+    }
+    settingInputs.forEach(i => i.addEventListener('change', saveSettings));
+    document.getElementById('clearCache').addEventListener('click', () => { alert('Cache cleared.'); });
+    document.getElementById('resetAll').addEventListener('click', () => {
+      if (!confirm('Reset all settings to defaults?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      settingInputs.forEach(i => i.checked = false);
+      window.PairedTheme?.apply();
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Log out of your account?')) { window.location.href = 'index.html'; }
+    });
+    loadSettings();
+  </script>
+</body>
+</html>

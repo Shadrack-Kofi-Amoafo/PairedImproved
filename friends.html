@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Paired • Friends</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script>window.PAGE_ACTIVE='friends';</script>
+	<script src="shared-ui-core.js" defer></script>
+	<script src="shared-ui-data.js" defer></script>
+	<script src="shared-ui-extras.js" defer></script>
+	<style>
+		/* Orbs animation (same as Homepage) */
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+		.orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+		.orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+		.no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
+		.no-scrollbar::-webkit-scrollbar { display:none; }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+
+	<!-- Orbs Background -->
+	<div class="absolute inset-0 -z-10">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+		<div class="orb orb3"></div>
+	</div>
+
+	<!-- Page Wrapper -->
+	<div class="w-full max-w-sm relative z-10">
+		<!-- Inline header -->
+		<div id="fixed-ui" class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-sm z-50"><div class="backdrop-blur-md bg-white/10 border-b border-white/20 shadow-lg overflow-hidden"><div class="px-4 py-3"><nav class="flex items-center justify-between"><div class="flex items-center space-x-2"><button id="openSidebarBtn" class="text-gray-300 hover:text-white" aria-label="Menu"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg></button><span class="text-2xl font-bold text-orange-500">Paired</span></div><div class="flex items-center space-x-2"><button id="openSearch" class="flex items-center justify-center w-9 h-9 rounded-full bg-gray-400/10 backdrop-blur-md border border-gray-600 hover:bg-white/10" aria-label="Search"><i data-lucide="search" class="w-5 h-5 text-white"></i></button><a href="chat.html" class="flex items-center justify-center w-9 h-9 rounded-full bg-gray-400/10 backdrop-blur-md border border-gray-600 hover:bg-white/10" aria-label="Messages"><i data-lucide="send" class="w-5 h-5 text-white -rotate-45"></i></a></div></nav><nav id="mainNavIcons" class="flex justify-around mt-3 text-white font-medium space-x-9 text-sm"><a href="Homepage.html" class="hover:text-orange-400" title="Home"><i data-lucide="home"></i></a><a href="friends.html" class="text-orange-400" title="Friends"><i data-lucide="users"></i></a><a href="market.html" class="hover:text-orange-400" title="Marketplace"><i data-lucide="shopping-bag"></i></a><a href="Notification.html" class="hover:text-orange-400" title="Notifications"><i data-lucide="bell"></i></a><a href="profile.html" class="hover:text-orange-400" title="Profile"><i data-lucide="user"></i></a></nav></div></div></div>
+		<script>
+		// Adjust body padding to avoid content hidden under fixed header
+		(function(){
+		 function adjust(){
+		  const ui=document.getElementById('fixed-ui');
+		  if(!ui) return;
+		  const h=ui.getBoundingClientRect().height;
+		  if(h && Math.abs((parseInt(getComputedStyle(document.body).paddingTop)||0)-h)>2){
+		    document.body.style.paddingTop=h+'px';
+		  }
+		 }
+		 if(document.readyState==='complete'||document.readyState==='interactive') adjust(); else document.addEventListener('DOMContentLoaded', adjust);
+		 window.addEventListener('resize', ()=> requestAnimationFrame(adjust));
+		})();
+		</script>
+		<div id="sidebar-container" class="fixed inset-0 z-[1001] pointer-events-none"><div id="sidebar-overlay" class="absolute inset-0 bg-black/60 opacity-0 hidden transition-opacity"></div><div id="sidebar" style="transform:translateX(-100%);" class="relative z-10 w-64 h-full bg-black/60 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col"><div class="flex items-center gap-3 mb-8"><div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500"><img src="https://picsum.photos/id/1019/80/80" alt="user" class="w-full h-full object-cover"></div><div><p class="font-semibold flex items-center">You <span data-premium-badge></span></p><p class="text-xs text-gray-400">@your_username</p></div></div><nav class="flex flex-col space-y-1 text-gray-300 text-sm"><a href="profile.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="user" class="w-5 h-5"></i><span>Profile</span></a><a href="upgradeTopremium.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i><span>Go Premium</span></a><a href="market.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span>Marketplace</span></a><a href="Bookmarks.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Bookmarks</span></a><a href="postAd.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="megaphone" class="w-5 h-5"></i><span>Post Ad or Event</span></a><a href="Settings.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="settings" class="w-5 h-5"></i><span>Settings</span></a><div class="flex items-center justify-between px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><div class="flex items-center gap-3"><i data-lucide="moon" class="w-5 h-5"></i><span>Theme</span></div><label class="inline-flex items-center cursor-pointer select-none"><input type="checkbox" data-theme-toggle class="sr-only peer" /><span class="w-10 h-5 bg-white/15 peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-pink-600 rounded-full relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></div></nav><div class="mt-auto pt-6 border-t border-white/10"><a href="index.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-red-500/20 text-red-400 hover:text-red-300 transition"><i data-lucide="log-out" class="w-5 h-5"></i><span>Logout</span></a></div></div></div>
+
+		<!-- Content Sections -->
+		<main class="px-4 space-y-6 pb-10" data-adjust-offset>
+			<!-- Friend Requests -->
+			<section class="mt-4 bg-white/5 border border-white/10 backdrop-blur rounded-xl p-4" id="friend-requests">
+				<div class="flex items-center justify-between mb-3">
+					<h2 class="font-semibold text-sm flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Friend Requests</h2>
+					<button class="text-[11px] text-orange-400 hover:underline">See all</button>
+				</div>
+				<div class="space-y-4" id="request-list">
+					<!-- Request Item -->
+					<div class="request flex gap-3" data-id="req1">
+						<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1012/80/80" class="w-full h-full object-cover" alt="avatar" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-sm font-semibold truncate">Ama Kusi</p>
+							<p class="text-[11px] text-gray-400">14 mutual friends • 2h</p>
+							<div class="flex gap-2 pt-2">
+								<button class="confirm px-3 py-1.5 rounded bg-orange-600 hover:bg-orange-500 text-[12px] font-medium">Confirm</button>
+								<button class="delete px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-[12px]">Delete</button>
+							</div>
+						</div>
+					</div>
+					<div class="request flex gap-3" data-id="req2">
+						<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1005/80/80" class="w-full h-full object-cover" alt="avatar" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-sm font-semibold truncate">Kwame Boateng</p>
+							<p class="text-[11px] text-gray-400">2 mutual friends • 5h</p>
+							<div class="flex gap-2 pt-2">
+								<button class="confirm px-3 py-1.5 rounded bg-orange-600 hover:bg-orange-500 text-[12px] font-medium">Confirm</button>
+								<button class="delete px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-[12px]">Delete</button>
+							</div>
+						</div>
+					</div>
+					<div class="request flex gap-3" data-id="req3">
+						<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1018/80/80" class="w-full h-full object-cover" alt="avatar" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-sm font-semibold truncate">Esi Nyarko</p>
+							<p class="text-[11px] text-gray-400">7 mutual friends • 1d</p>
+							<div class="flex gap-2 pt-2">
+								<button class="confirm px-3 py-1.5 rounded bg-orange-600 hover:bg-orange-500 text-[12px] font-medium">Confirm</button>
+								<button class="delete px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-[12px]">Delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Friend Suggestions (People You May Know) -->
+			<section class="bg-white/5 border border-white/10 backdrop-blur rounded-xl p-4" id="suggestions">
+				<div class="flex items-center justify-between mb-3">
+					<h2 class="font-semibold text-sm flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i>People You May Know</h2>
+					<button class="text-[11px] text-orange-400 hover:underline">Refresh</button>
+				</div>
+				<div class="overflow-x-auto no-scrollbar -mx-1 px-1" style="-webkit-overflow-scrolling:touch;">
+					<div class="flex space-x-3 w-max" id="suggestion-track">
+						<div class="suggestion w-32 flex-shrink-0 bg-white/5 rounded-lg border border-white/10 overflow-hidden" data-id="sug1">
+							<div class="h-24 w-full bg-center bg-cover" style="background-image:url('https://picsum.photos/id/1027/140/140')"></div>
+							<div class="p-2 space-y-1">
+								<p class="text-xs font-semibold leading-tight">Aisha Mensah</p>
+								<p class="text-[10px] text-gray-400">6 mutual friends</p>
+								<div class="flex gap-1 pt-1">
+									<button class="flex-1 add px-1.5 py-1 rounded bg-orange-600 hover:bg-orange-500 text-[10px] font-medium">Add</button>
+									<button class="dismiss border border-white/20 hover:bg-white/10 rounded px-1.5 py-1 text-[10px]">X</button>
+								</div>
+							</div>
+						</div>
+						<div class="suggestion w-32 flex-shrink-0 bg-white/5 rounded-lg border border-white/10 overflow-hidden" data-id="sug2">
+							<div class="h-24 w-full bg-center bg-cover" style="background-image:url('https://picsum.photos/id/1005/140/140')"></div>
+							<div class="p-2 space-y-1">
+								<p class="text-xs font-semibold leading-tight">Yaw Ofori</p>
+								<p class="text-[10px] text-gray-400">3 mutual friends</p>
+								<div class="flex gap-1 pt-1">
+									<button class="flex-1 add px-1.5 py-1 rounded bg-orange-600 hover:bg-orange-500 text-[10px] font-medium">Add</button>
+									<button class="dismiss border border-white/20 hover:bg-white/10 rounded px-1.5 py-1 text-[10px]">X</button>
+								</div>
+							</div>
+						</div>
+						<div class="suggestion w-32 flex-shrink-0 bg-white/5 rounded-lg border border-white/10 overflow-hidden" data-id="sug3">
+							<div class="h-24 w-full bg-center bg-cover" style="background-image:url('https://picsum.photos/id/1012/140/140')"></div>
+							<div class="p-2 space-y-1">
+								<p class="text-xs font-semibold leading-tight">Kofi Adjei</p>
+								<p class="text-[10px] text-gray-400">1 mutual friend</p>
+								<div class="flex gap-1 pt-1">
+									<button class="flex-1 add px-1.5 py-1 rounded bg-orange-600 hover:bg-orange-500 text-[10px] font-medium">Add</button>
+									<button class="dismiss border border-white/20 hover:bg-white/10 rounded px-1.5 py-1 text-[10px]">X</button>
+								</div>
+							</div>
+						</div>
+						<div class="suggestion w-32 flex-shrink-0 bg-white/5 rounded-lg border border-white/10 overflow-hidden" data-id="sug4">
+							<div class="h-24 w-full bg-center bg-cover" style="background-image:url('https://picsum.photos/id/1025/140/140')"></div>
+							<div class="p-2 space-y-1">
+								<p class="text-xs font-semibold leading-tight">Mimi Osei</p>
+								<p class="text-[10px] text-gray-400">4 mutual friends</p>
+								<div class="flex gap-1 pt-1">
+									<button class="flex-1 add px-1.5 py-1 rounded bg-orange-600 hover:bg-orange-500 text-[10px] font-medium">Add</button>
+									<button class="dismiss border border-white/20 hover:bg-white/10 rounded px-1.5 py-1 text-[10px]">X</button>
+								</div>
+							</div>
+						</div>
+						<div class="suggestion w-32 flex-shrink-0 bg-white/5 rounded-lg border border-white/10 overflow-hidden" data-id="sug5">
+							<div class="h-24 w-full bg-center bg-cover" style="background-image:url('https://picsum.photos/id/1037/140/140')"></div>
+							<div class="p-2 space-y-1">
+								<p class="text-xs font-semibold leading-tight">Selorm Gbadz</p>
+								<p class="text-[10px] text-gray-400">9 mutual friends</p>
+								<div class="flex gap-1 pt-1">
+									<button class="flex-1 add px-1.5 py-1 rounded bg-orange-600 hover:bg-orange-500 text-[10px] font-medium">Add</button>
+									<button class="dismiss border border-white/20 hover:bg-white/10 rounded px-1.5 py-1 text-[10px]">X</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- All Friends (optional preview) -->
+			<section class="bg-white/5 border border-white/10 backdrop-blur rounded-xl p-4" id="all-friends">
+				<div class="flex items-center justify-between mb-3">
+					<h2 class="font-semibold text-sm flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Your Friends</h2>
+					<button class="text-[11px] text-orange-400 hover:underline">Manage</button>
+				</div>
+				<div class="grid grid-cols-3 gap-3 text-[11px]">
+					<div class="text-center">
+						<div class="w-14 h-14 mx-auto rounded-full overflow-hidden border border-white/20 mb-1">
+							<img src="https://picsum.photos/id/1003/80/80" class="w-full h-full object-cover" alt="f1" />
+						</div>
+						<p class="truncate">Nana</p>
+					</div>
+					<div class="text-center">
+						<div class="w-14 h-14 mx-auto rounded-full overflow-hidden border border-white/20 mb-1">
+							<img src="https://picsum.photos/id/1010/80/80" class="w-full h-full object-cover" alt="f2" />
+						</div>
+						<p class="truncate">Kojo</p>
+					</div>
+					<div class="text-center">
+						<div class="w-14 h-14 mx-auto rounded-full overflow-hidden border border-white/20 mb-1">
+							<img src="https://picsum.photos/id/1011/80/80" class="w-full h-full object-cover" alt="f3" />
+						</div>
+						<p class="truncate">Akua</p>
+					</div>
+					<div class="text-center">
+						<div class="w-14 h-14 mx-auto rounded-full overflow-hidden border border-white/20 mb-1">
+							<img src="https://picsum.photos/id/1014/80/80" class="w-full h-full object-cover" alt="f4" />
+						</div>
+						<p class="truncate">Yaw</p>
+					</div>
+					<div class="text-center">
+						<div class="w-14 h-14 mx-auto rounded-full overflow-hidden border border-white/20 mb-1">
+							<img src="https://picsum.photos/id/1020/80/80" class="w-full h-full object-cover" alt="f5" />
+						</div>
+						<p class="truncate">Afia</p>
+					</div>
+					<div class="text-center">
+						<div class="w-14 h-14 mx-auto rounded-full overflow-hidden border border-white/20 mb-1">
+							<img src="https://picsum.photos/id/1024/80/80" class="w-full h-full object-cover" alt="f6" />
+						</div>
+						<p class="truncate">Dede</p>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		lucide.createIcons();
+		// Friend request actions
+		document.addEventListener('click', (e)=> {
+			const confirmBtn = e.target.closest('.confirm');
+			if(confirmBtn){
+				confirmBtn.textContent = 'Friends';
+				confirmBtn.classList.remove('bg-orange-600','hover:bg-orange-500');
+				confirmBtn.classList.add('bg-green-600');
+				confirmBtn.disabled = true;
+			}
+			const deleteBtn = e.target.closest('.delete');
+			if(deleteBtn){
+				const req = deleteBtn.closest('.request');
+				req?.remove();
+			}
+			const addBtn = e.target.closest('.suggestion .add');
+			if(addBtn){
+				addBtn.textContent = 'Added';
+				addBtn.classList.remove('bg-orange-600','hover:bg-orange-500');
+				addBtn.classList.add('bg-green-600');
+				addBtn.disabled = true;
+			}
+			const dismissBtn = e.target.closest('.suggestion .dismiss');
+			if(dismissBtn){
+				dismissBtn.closest('.suggestion')?.remove();
+			}
+			// Navigate to PeopleProfile when clicking avatar or name in requests or suggestions
+			if(e.target.closest('.request .w-14, .request p.font-semibold') || e.target.closest('.suggestion .h-24, .suggestion p.font-semibold')){
+				window.location.href='PeopleProfile.html';
+			}
+		});
+	</script>
+	<!-- Search Modal -->
+	<div id="searchModal" class="fixed inset-0 z-[999] hidden">
+		<div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+		<div class="absolute inset-x-0 top-0 mx-auto w-full max-w-sm p-4 animate-fade-in">
+			<div class="bg-white/10 border border-white/20 rounded-2xl p-4 shadow-xl relative">
+				<div class="flex items-center gap-2">
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+					<input id="searchInputModal" type="text" placeholder="Search..." class="flex-1 bg-transparent outline-none text-sm placeholder-gray-400" />
+					<button id="closeSearch" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Close search">
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+					</button>
+				</div>
+				<div id="searchResults" class="mt-4 max-h-72 overflow-y-auto space-y-2 text-sm"></div>
+				<div id="searchEmpty" class="mt-6 text-center text-xs text-gray-400">Type to start searching</div>
+			</div>
+		</div>
+	</div>
+	<style>
+		@keyframes fade-in {from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+		.animate-fade-in { animation: fade-in .25s ease; }
+		.no-scroll { overflow: hidden !important; }
+	</style>
+	<script>
+	(function(){
+		const openBtn = document.getElementById('openSearch');
+		const modal = document.getElementById('searchModal');
+		const closeBtn = document.getElementById('closeSearch');
+		const input = document.getElementById('searchInputModal');
+		const results = document.getElementById('searchResults');
+		const empty = document.getElementById('searchEmpty');
+		const sample = ['Ama Kusi','Kwame Boateng','Marketplace: Laptop','Post: Productivity tips','Esi Nyarko','Event: Hack Night'];
+		function open(){ modal.classList.remove('hidden'); document.body.classList.add('no-scroll'); setTimeout(()=>input.focus(),50);} 
+		function close(){ modal.classList.add('hidden'); document.body.classList.remove('no-scroll'); input.value=''; results.innerHTML=''; empty.classList.remove('hidden'); }
+		openBtn?.addEventListener('click', open);
+		closeBtn?.addEventListener('click', close);
+		modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
+		document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !modal.classList.contains('hidden')) close(); });
+		input.addEventListener('input', ()=>{
+			const q = input.value.trim().toLowerCase();
+			results.innerHTML='';
+			if(!q){ empty.classList.remove('hidden'); return; }
+			empty.classList.add('hidden');
+			const filtered = sample.filter(s=>s.toLowerCase().includes(q));
+			if(!filtered.length){ results.innerHTML='<div class="text-xs text-gray-400 text-center py-4">No matches</div>'; return; }
+			filtered.forEach(item=>{
+				const div = document.createElement('div');
+				div.className='px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 cursor-pointer';
+				div.textContent = item;
+				results.appendChild(div);
+			});
+		});
+	})();
+	</script>
+</body>
+</html>

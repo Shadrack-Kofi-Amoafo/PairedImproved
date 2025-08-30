@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<title>Paired • Store</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<style>
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:280px; height:280px; background:orange; top:8%; left:4%; animation-duration:25s; }
+		.orb2 { width:240px; height:240px; background:purple; bottom:6%; right:6%; animation-duration:22s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(25px);} }
+		.store-stat { display:flex; flex-direction:column; align-items:center; font-size:10px; }
+		.store-stat span { font-size:14px; font-weight:600; }
+		html.theme-light .store-bio { background: var(--bg-soft) !important; }
+		.product-card { transition:background .25s; }
+		.product-card:hover { background: var(--bg-softer); }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+	<div class="absolute inset-0 -z-10 pointer-events-none">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+	</div>
+	<div class="w-full max-w-sm relative z-10">
+		<!-- Header -->
+		<header class="sticky top-0 left-0 w-full z-50">
+			<div class="backdrop-blur-md bg-white/10 border-b border-white/20 px-4 py-3 shadow-lg flex items-center gap-2">
+				<button onclick="history.back()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Back"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+				<h1 class="text-sm font-semibold">Seller Store</h1>
+				<div class="ml-auto flex items-center gap-2">
+					<button id="themeQuick" data-theme-toggle class="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/15 border border-white/10" aria-label="Toggle theme"><i data-lucide="sun" class="w-4 h-4"></i></button>
+				</div>
+			</div>
+		</header>
+		<!-- Cover / Profile -->
+		<section class="relative">
+			<div id="storeBanner" class="h-40 w-full bg-gradient-to-br from-orange-600/50 via-fuchsia-600/40 to-purple-700/40 overflow-hidden border-b border-white/10">
+				<img id="storeBannerImg" src="https://picsum.photos/id/1040/800/400" class="w-full h-full object-cover mix-blend-overlay opacity-70" alt="banner" />
+			</div>
+			<div class="px-4">
+				<div class="flex items-end gap-3 -mt-12">
+					<div class="relative w-24 h-24 rounded-full border-4 border-black overflow-hidden shadow-lg">
+						<img id="storeAvatar" src="https://picsum.photos/id/1019/200/200" alt="store avatar" class="w-full h-full object-cover" />
+						<button id="changeAvatar" class="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-black/70 backdrop-blur flex items-center justify-center border border-white/20 text-orange-400 hover:bg-orange-600/20" title="Change"><i data-lucide="camera" class="w-4 h-4"></i></button>
+					</div>
+					<div class="flex-1">
+						<h2 id="storeName" class="text-lg font-bold leading-tight">Ama's Gadgets</h2>
+						<p class="text-[11px] text-gray-300">Verified Seller • 2yrs</p>
+						<div class="flex gap-4 mt-2 text-[11px] text-gray-300">
+							<div class="store-stat"><span class="text-orange-400" id="statProducts">0</span>Products</div>
+							<div class="store-stat"><span class="text-orange-400" id="statSales">124</span>Sales</div>
+							<div class="store-stat"><span class="text-orange-400" id="statRating">4.8</span>Rating</div>
+						</div>
+					</div>
+				</div>
+				<div class="mt-3 store-bio bg-white/5 border border-white/10 rounded-xl p-3 text-[12px] leading-relaxed" id="storeBio">We specialize in quality electronics and accessories. Fast responses & friendly service.</div>
+				<div class="flex gap-2 mt-3">
+					<button id="dmStore" class="flex-1 py-2 rounded-full bg-orange-600 hover:bg-orange-500 text-xs font-medium">DM Store</button>
+					<button id="followStore" class="flex-1 py-2 rounded-full bg-white/10 hover:bg-white/20 text-xs font-medium border border-white/10">Follow</button>
+				</div>
+			</div>
+		</section>
+		<!-- Products -->
+		<main class="px-4 pt-5 pb-20 space-y-4" id="storeProductsWrapper">
+			<h3 class="text-sm font-semibold">Products</h3>
+			<div id="storeProducts" class="grid grid-cols-2 gap-3"></div>
+			<div id="emptyState" class="hidden text-center text-[11px] text-gray-400 py-8">No products yet.</div>
+		</main>
+	</div>
+	<script>
+		lucide.createIcons();
+		// Mock: fetch seller products (reuse some marketplace sample style)
+		const products = [
+			{id:1,title:'Wireless Earbuds ANC',price:220,img:'https://picsum.photos/id/1080/400/400',time:'2h',location:'Accra'},
+			{id:2,title:'iPhone 13 Pro 256GB',price:720,img:'https://picsum.photos/id/1015/400/400',time:'5h',location:'Accra'},
+			{id:3,title:'Gaming Laptop 16GB RAM',price:980,img:'https://picsum.photos/id/1047/400/400',time:'1d',location:'Kumasi'},
+			{id:4,title:'Smartwatch Series 8',price:180,img:'https://picsum.photos/id/180/400/400',time:'1d',location:'Tema'}
+		];
+		const grid = document.getElementById('storeProducts');
+		function renderStore(){
+			if(!products.length){ document.getElementById('emptyState').classList.remove('hidden'); return; }
+			document.getElementById('statProducts').textContent = products.length;
+			grid.innerHTML = products.map(p=>`<div class='product-card bg-white/5 border border-white/10 rounded-lg overflow-hidden'>
+					<div class='w-full h-32 bg-cover bg-center' style='background-image:url(${p.img})'></div>
+					<div class='p-2 space-y-1'>
+						<p class='text-[12px] font-semibold leading-tight line-clamp-2'>${p.title}</p>
+						<p class='text-orange-400 text-[13px] font-bold'>GH₵${p.price.toLocaleString()}</p>
+						<p class='text-[10px] text-gray-400 flex items-center justify-between'><span>${p.location}</span><span>${p.time}</span></p>
+					</div>
+				</div>`).join('');
+		}
+		renderStore();
+		document.getElementById('dmStore').addEventListener('click', ()=> window.location.href='Dm.html');
+		document.getElementById('followStore').addEventListener('click', function(){ this.classList.toggle('bg-orange-600'); this.classList.toggle('text-white'); this.textContent = this.textContent==='Follow'?'Following':'Follow'; });
+	</script>
+</body>
+</html>

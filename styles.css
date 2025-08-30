@@ -1,0 +1,100 @@
+/* Paired Global Theme Variables & Overrides */
+:root {
+	--bg: #000000;
+	--bg-soft: rgba(255,255,255,0.05);
+	--bg-softer: rgba(255,255,255,0.10);
+	--bg-softest: rgba(255,255,255,0.15);
+	--text: #ffffff;
+	--text-muted: #9ca3af;
+	--border-soft: rgba(255,255,255,0.10);
+	--border-softer: rgba(255,255,255,0.20);
+	--accent: #f97316;
+}
+html.theme-light {
+	--bg: linear-gradient(145deg,#f0f4f8,#ffffff 55%,#f8fafc);
+	--bg-soft: rgba(255,255,255,0.85);
+	--bg-softer: rgba(255,255,255,0.70);
+	--bg-softest: rgba(255,255,255,0.55);
+	--text: #1e293b;
+	--text-muted: #64748b;
+	--border-soft: rgba(15,23,42,0.10);
+	--border-softer: rgba(15,23,42,0.18);
+	--accent: #f97316;
+}
+body { background: var(--bg); background-attachment: fixed; color: var(--text); }
+@media (prefers-reduced-motion: reduce) {
+	* { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+	.orb, .shimmer, [data-animate] { animation: none !important; }
+}
+html, body, body * { transition: background-color .25s linear, color .25s linear, border-color .25s linear, fill .25s linear, stroke .25s linear; }
+@media (prefers-reduced-motion: reduce){ html, body, body * { transition: none !important; } }
+.animate-fade-in { animation: fadeIn .35s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px);} to { opacity:1; transform:translateY(0);} }
+/* Override frequently used Tailwind utility color classes using higher specificity */
+body .bg-black { background: var(--bg) !important; }
+body .bg-white\/5 { background: var(--bg-soft) !important; backdrop-filter: saturate(1.2) blur(6px); }
+body .bg-white\/10 { background: var(--bg-softer) !important; backdrop-filter: saturate(1.2) blur(8px); }
+body .bg-white\/20 { background: var(--bg-softest) !important; backdrop-filter: saturate(1.2) blur(10px); }
+body .text-white { color: var(--text) !important; }
+body .text-gray-400 { color: var(--text-muted) !important; }
+body .text-gray-300 { color: var(--text-muted) !important; }
+body .text-gray-200 { color: var(--text) !important; opacity: .85; }
+body .text-gray-500 { color: var(--text-muted) !important; opacity:.9; }
+body .text-gray-600, body .text-gray-700, body .text-gray-800 { color: var(--text) !important; }
+body .border-white\/10 { border-color: var(--border-soft) !important; }
+body .border-white\/20 { border-color: var(--border-softer) !important; }
+/* Accent helper */
+.accent-text { color: var(--accent); }
+.accent-bg { background: var(--accent); }
+/* Modal backdrop tweak for light theme */
+html.theme-light .backdrop-blur-sm, html.theme-light .backdrop-blur-md { backdrop-filter: blur(14px); }
+html.theme-light .orb, html.theme-light .orb1, html.theme-light .orb2, html.theme-light .orb3 { opacity:.25; filter: blur(120px); mix-blend-mode:multiply; }
+/* Elevation tweaks */
+html.theme-light .shadow-lg, html.theme-light .shadow-xl { box-shadow: 0 8px 24px -6px rgba(15,23,42,0.12), 0 2px 4px rgba(15,23,42,0.06); }
+/* Text contrast adjustments inside soft backgrounds */
+html.theme-light .text-gray-300 { color: var(--text-muted) !important; }
+html.theme-light .text-gray-400 { color: var(--text-muted) !important; }
+html.theme-light .text-gray-200, html.theme-light .text-gray-100 { color: var(--text) !important; }
+html.theme-light .text-orange-400 { color: var(--accent) !important; }
+html.theme-light .text-orange-500 { color: var(--accent) !important; }
+html.theme-light .bg-orange-600 { background: var(--accent) !important; }
+html.theme-light .from-orange-600 { --tw-gradient-from: var(--accent) !important; }
+html.theme-light .border-white\/10 { border-color: var(--border-soft) !important; }
+html.theme-light .border-white\/20 { border-color: var(--border-softer) !important; }
+html.theme-light .hover\:bg-white\/10:hover { background: rgba(0,0,0,0.06) !important; }
+html.theme-light .hover\:bg-white\/20:hover { background: rgba(0,0,0,0.1) !important; }
+/* Ensure dark utility backgrounds lighten for readability */
+html.theme-light .bg-black\/30 { background: rgba(15,23,42,0.08) !important; }
+html.theme-light .bg-black\/70, html.theme-light .bg-black\/60 { background: rgba(15,23,42,0.35) !important; }
+html.theme-light .bg-black { background: #ffffff !important; }
+html.theme-light .text-white { color: var(--text) !important; }
+/* Specific override: keep hero name white in light theme as requested */
+html.theme-light .profile-hero-name { color:#fff !important; text-shadow:0 1px 2px rgba(0,0,0,0.15); }
+/* Icon visibility adjustments */
+html.theme-light [data-lucide="search"], html.theme-light svg.stroke-white, html.theme-light i[data-lucide="search"], html.theme-light button[aria-label="Search"] svg { stroke: var(--text) !important; color: var(--text) !important; opacity:.9; }
+html.theme-light button[aria-label="Search"] { border-color: var(--border-soft) !important; }
+/* Placeholder colors */
+html.theme-light ::placeholder { color: var(--text-muted) !important; opacity:.8; }
+/* Buttons with text-gray-400 become muted but readable */
+html.theme-light .text-gray-400 { opacity: .9 !important; }
+/* Post meta lines */
+/* Generic tiny meta text override */
+html.theme-light [class*="text-\[11px\]"].text-gray-400 { color: var(--text-muted) !important; }
+/* Overlays retain legibility */
+html.theme-light .bg-black\/70.backdrop-blur-sm, html.theme-light .bg-black\/70.backdrop-blur-md { background: rgba(15,23,42,0.45) !important; }
+/* Gradient tab-active refinement */
+.tab-active { color:#fff !important; box-shadow:0 0 0 1px rgba(255,255,255,0.15) inset,0 2px 4px -1px rgba(0,0,0,0.2); }
+/* Force links to white in light theme for visibility as requested */
+/* Generic link color in light theme kept dark unless specifically overridden for contrast areas */
+html.theme-light a { color: var(--text) !important; }
+html.theme-light a:hover { color: var(--text) !important; text-shadow:0 0 2px rgba(0,0,0,0.12); }
+/* Light theme: force main nav icons (home, people, notifications, market, profile) to black for contrast */
+/* Light theme: main bottom/top nav icons black for readability */
+html.theme-light #mainNavIcons i[data-lucide] { color:#0f172a !important; stroke:#0f172a !important; opacity:.78; }
+html.theme-light #mainNavIcons a:hover i[data-lucide] { opacity:1; }
+/* Light theme: keep sidebar text white for contrast on translucent dark backdrop */
+html.theme-light #sidebar a span, html.theme-light #sidebar a, html.theme-light #sidebar i[data-lucide], html.theme-light #sidebar div.flex.items-center.gap-3 > i[data-lucide] { color:#ffffff !important; stroke:#ffffff !important; }
+html.theme-light #sidebar .hover\:bg-white\/10:hover { background:rgba(0,0,0,0.25) !important; }
+/* Light theme: 'New' label under Add Status should be black */
+/* Light theme: 'New' status label pill styling */
+html.theme-light #global-statuses div[title="Add Status"] span { color:#0f172a !important; background:rgba(15,23,42,0.08); padding:2px 6px; border-radius:12px; font-weight:600; }

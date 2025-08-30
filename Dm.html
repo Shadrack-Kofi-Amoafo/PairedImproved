@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Paired • Chat</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script>window.PAGE_ACTIVE='home';</script>
+	<script src="shared-ui-core.js" defer></script>
+	<script src="shared-ui-data.js" defer></script>
+	<script src="shared-ui-extras.js" defer></script>
+	<style>
+		/* Orbs animation */
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+		.orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+		.orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+		.no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
+		.no-scrollbar::-webkit-scrollbar { display:none; }
+	</style>
+</head>
+<body class="bg-black text-white h-screen overflow-hidden relative flex justify-center">
+
+	<!-- Orbs Background -->
+	<div class="absolute inset-0 -z-10">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+		<div class="orb orb3"></div>
+	</div>
+
+	<!-- Page Wrapper -->
+	<div class="w-full max-w-sm relative z-10 flex flex-col h-full">
+		<div id="fixed-ui" class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-sm z-50"><div class="backdrop-blur-md bg-black/50 border-b border-white/15 shadow-lg"><div class="px-2 py-2 flex items-center gap-2"><button onclick="history.back()" aria-label="Back" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10"><i data-lucide="chevron-left" class="w-5 h-5"></i></button><div class="w-9 h-9 rounded-full overflow-hidden border border-white/20"><img src="https://picsum.photos/id/1012/80/80" class="w-full h-full object-cover" alt="avatar"/></div><div class="flex-1 leading-tight min-w-0"><p class="text-sm font-semibold truncate">Ama Kusi</p><p class="text-[10px] text-green-400">online</p></div><div class="flex items-center gap-1"><button class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Call"><i data-lucide="phone" class="w-5 h-5"></i></button><button class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="More"><i data-lucide="more-vertical" class="w-5 h-5"></i></button></div></div></div></div>
+		<div id="sidebar-container" class="fixed inset-0 z-[1001] pointer-events-none"><div id="sidebar-overlay" class="absolute inset-0 bg-black/60 opacity-0 hidden transition-opacity"></div><div id="sidebar" style="transform:translateX(-100%);" class="relative z-10 w-64 h-full bg-black/60 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col"><div class="flex items-center gap-3 mb-8"><div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500"><img src="https://picsum.photos/id/1019/80/80" alt="user" class="w-full h-full object-cover"></div><div><p class="font-semibold flex items-center">You <span data-premium-badge></span></p><p class="text-xs text-gray-400">@your_username</p></div></div><nav class="flex flex-col space-y-1 text-gray-300 text-sm"><a href="profile.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="user" class="w-5 h-5"></i><span>Profile</span></a><a href="upgradeTopremium.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i><span>Go Premium</span></a><a href="market.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span>Marketplace</span></a><a href="Bookmarks.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Bookmarks</span></a><a href="postAd.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="megaphone" class="w-5 h-5"></i><span>Post Ad or Event</span></a><a href="Settings.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="settings" class="w-5 h-5"></i><span>Settings</span></a><div class="flex items-center justify-between px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><div class="flex items-center gap-3"><i data-lucide="moon" class="w-5 h-5"></i><span>Theme</span></div><label class="inline-flex items-center cursor-pointer select-none"><input type="checkbox" data-theme-toggle class="sr-only peer" /><span class="w-10 h-5 bg-white/15 peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-pink-600 rounded-full relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></div></nav><div class="mt-auto pt-6 border-t border-white/10"><a href="index.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-red-500/20 text-red-400 hover:text-red-300 transition"><i data-lucide="log-out" class="w-5 h-5"></i><span>Logout</span></a></div></div></div>
+		<main id="chatScroll" class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar">
+			<div class="sticky top-0 z-10 flex justify-center">
+				<span class="text-[10px] tracking-wide bg-white/10 backdrop-blur px-3 py-1 rounded-full text-gray-300 mt-1 border border-white/10">Today</span>
+			</div>
+			<div class="chat-msg-in flex items-end gap-2 max-w-[78%]">
+				<div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 border border-white/10">
+					<img src="https://picsum.photos/id/1012/60/60" class="w-full h-full object-cover" alt="avatar" />
+				</div>
+				<div class="bubble bg-white/10 px-3 py-2 rounded-2xl rounded-bl-sm shadow-sm">
+					<p class="text-sm leading-snug">Hey! Are we still on for lunch tomorrow?</p>
+					<p class="meta text-[10px] text-gray-400 text-right mt-1">10:44</p>
+				</div>
+			</div>
+			<div class="chat-msg-out ml-auto flex items-end gap-2 max-w-[78%] justify-end">
+				<div class="bubble bg-gradient-to-br from-orange-600 to-orange-500 px-3 py-2 rounded-2xl rounded-br-sm shadow">
+					<p class="text-sm leading-snug">Yes, absolutely! Looking forward to it.</p>
+					<p class="meta text-[10px] text-orange-100/80 text-right mt-1">10:45</p>
+				</div>
+			</div>
+			<div class="chat-msg-in flex items-end gap-2 max-w-[78%]">
+				<div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 border border-white/10">
+					<img src="https://picsum.photos/id/1012/60/60" class="w-full h-full object-cover" alt="avatar" />
+				</div>
+				<div class="bubble bg-white/10 px-3 py-2 rounded-2xl rounded-bl-sm shadow-sm">
+					<p class="text-sm leading-snug">Awesome! See you then. Can't wait!</p>
+					<p class="meta text-[10px] text-gray-400 text-right mt-1">10:46</p>
+				</div>
+			</div>
+		</main>
+
+		<footer class="flex-shrink-0 p-2 sticky bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent">
+			<div class="backdrop-blur-md bg-white/10 border border-white/10 rounded-2xl px-3 py-2 flex items-center gap-2">
+				<button id="emojiBtn" class="p-2 text-gray-300 hover:text-white"><i data-lucide="smile" class="w-5 h-5"></i></button>
+				<textarea id="chatInput" rows="1" placeholder="Message" class="flex-1 resize-none bg-transparent text-sm placeholder-gray-400 focus:outline-none leading-snug max-h-32"></textarea>
+				<button id="attachBtn" class="p-2 text-gray-300 hover:text-white" aria-label="Attach file"><i data-lucide="paperclip" class="w-5 h-5"></i></button>
+				<input id="attachInput" type="file" multiple class="hidden" />
+				<button id="sendBtn" class="p-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white flex items-center justify-center" aria-label="Send"><i data-lucide="send" class="w-5 h-5 -rotate-45"></i></button>
+			</div>
+		</footer>
+	</div>
+
+	<script>
+		lucide.createIcons();
+		const input = document.getElementById('chatInput');
+		const sendBtn = document.getElementById('sendBtn');
+		const scrollArea = document.getElementById('chatScroll');
+		const attachBtn = document.getElementById('attachBtn');
+		const attachInput = document.getElementById('attachInput');
+		function autoScroll(){ requestAnimationFrame(()=>{ scrollArea.scrollTop = scrollArea.scrollHeight; }); }
+		autoScroll();
+		function send(){
+			const text = input.value.trim();
+			if(!text) return;
+			const wrapper = document.createElement('div');
+			wrapper.className='chat-msg-out ml-auto flex items-end gap-2 max-w-[78%] justify-end';
+			wrapper.innerHTML = `<div class="bubble bg-gradient-to-br from-orange-600 to-orange-500 px-3 py-2 rounded-2xl rounded-br-sm shadow"><p class="text-sm leading-snug"></p><p class="meta text-[10px] text-orange-100/80 text-right mt-1">${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}</p></div>`;
+			wrapper.querySelector('p.text-sm')?.append(document.createTextNode(text));
+			scrollArea.appendChild(wrapper);
+			input.value='';
+			input.style.height='auto';
+			autoScroll();
+		}
+		input.addEventListener('keydown', e=>{
+			if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); }
+		});
+		sendBtn.addEventListener('click', send);
+		input.addEventListener('input', ()=>{
+			input.style.height='auto';
+			input.style.height = Math.min(input.scrollHeight, 128)+ 'px';
+		});
+		attachBtn.addEventListener('click', ()=> attachInput.click());
+		attachInput.addEventListener('change', ()=>{
+			if(!attachInput.files?.length) return;
+			// Simple feedback bubble listing selected file names
+			const names=[...attachInput.files].slice(0,3).map(f=>f.name).join(', ')+(attachInput.files.length>3?'…':'');
+			const info=document.createElement('div');
+			info.className='text-[10px] text-gray-400 px-2 pt-1';
+			info.textContent='Attached: '+names;
+			const lastFooter=document.querySelector('footer .backdrop-blur-md');
+			if(lastFooter && !lastFooter.querySelector('.attach-info')){
+				info.classList.add('attach-info');
+				lastFooter.appendChild(info);
+				setTimeout(()=> info.remove(),4000);
+			}
+		});
+	</script>
+</body>
+</html>

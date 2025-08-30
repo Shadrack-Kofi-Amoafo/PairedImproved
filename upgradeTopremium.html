@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Paired • Upgrade to Premium</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script>window.PAGE_ACTIVE='profile';</script>
+	<script src="shared-ui.js"></script>
+	<style>
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+		.orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+		.orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+		.feature-card { background:linear-gradient(135deg, rgba(249,115,22,0.15), rgba(168,85,247,0.15)); }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+	<div class="absolute inset-0 -z-10 pointer-events-none">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+		<div class="orb orb3"></div>
+	</div>
+	<script src="shared-ui.js"></script>
+	<main class="w-full max-w-sm relative z-10 pb-16 px-4 space-y-6" id="premium-root" data-adjust-offset>
+		<div class="text-center space-y-2">
+			<div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-orange-500 to-purple-600 flex items-center justify-center shadow-lg shadow-orange-500/30"><i data-lucide="crown" class="w-10 h-10 text-white"></i></div>
+			<h1 class="text-xl font-bold tracking-wide">Paired Premium</h1>
+			<p class="text-xs text-gray-300 leading-relaxed">Unlock advanced tools to stand out, boost your marketplace sales and engage faster on campus.</p>
+			<div id="premiumBadgeTarget"></div>
+		</div>
+		<section class="space-y-3">
+			<h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-yellow-400"></i>Why Go Premium?</h2>
+			<div class="grid grid-cols-2 gap-3 text-[11px]" id="premiumBenefits">
+				<!-- Benefit cards injected by script -->
+			</div>
+		</section>
+		<section class="space-y-3">
+			<h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-orange-400"></i>Plans</h2>
+			<div class="space-y-3" id="plans">
+				<div class="relative rounded-2xl p-4 bg-white/5 border border-white/10 flex items-center gap-3">
+					<div class="flex-1">
+						<p class="text-sm font-semibold">Monthly</p>
+						<p class="text-[10px] text-gray-400">Cancel anytime. 2 boost credits.</p>
+					</div>
+					<div class="text-right">
+						<p class="font-bold text-orange-400 text-sm">GH₵15<span class="text-[10px] text-gray-400 font-normal">/mo</span></p>
+						<button data-plan="monthly" class="plan-btn mt-1 px-3 py-1.5 rounded-full bg-orange-600 hover:bg-orange-500 text-[11px] font-medium">Subscribe</button>
+					</div>
+				</div>
+				<div class="relative rounded-2xl p-4 bg-gradient-to-br from-orange-600/30 to-purple-600/30 border border-orange-400/30 flex items-center gap-3 overflow-hidden">
+					<div class="flex-1">
+						<p class="text-sm font-semibold">Semester</p>
+						<p class="text-[10px] text-gray-200">Save 20%. 15 boost credits.</p>
+					</div>
+					<div class="text-right">
+						<p class="font-bold text-orange-300 text-sm">GH₵60<span class="text-[10px] text-gray-200 font-normal">/sem</span></p>
+						<button data-plan="semester" class="plan-btn mt-1 px-3 py-1.5 rounded-full bg-orange-500 hover:bg-orange-400 text-[11px] font-medium">Subscribe</button>
+					</div>
+				</div>
+			</div>
+			<div id="activePlan" class="hidden bg-green-600/20 border border-green-400/30 rounded-xl p-3 text-[11px] flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i><span>Premium active.</span><button id="cancelPremium" class="ml-auto px-2 py-1 rounded bg-red-600/30 hover:bg-red-600/50 text-[10px]">Cancel</button></div>
+		</section>
+		<section class="space-y-3">
+			<h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-pink-400"></i>Boost Credits</h2>
+			<div class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2 text-[11px]">
+				<p>You currently have <span id="boostCount" class="font-bold text-orange-400">0</span> credits.</p>
+				<div class="flex gap-2 pt-1">
+					<button id="addOneCredit" class="flex-1 py-2 rounded-lg bg-white/10 hover:bg-white/20">Buy 1 (GH₵5)</button>
+					<button id="addPackCredit" class="flex-1 py-2 rounded-lg bg-orange-600 hover:bg-orange-500">Buy 5 (GH₵20)</button>
+				</div>
+			</div>
+		</section>
+		<section class="space-y-3">
+			<h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="ticket" class="w-4 h-4 text-purple-400"></i>Campus Services (Preview)</h2>
+			<div class="bg-white/5 border border-white/10 rounded-xl p-4 text-[11px] space-y-2">
+				<p class="leading-relaxed">Soon you'll discover & buy tickets, apply for campus jobs/internships and promote events directly inside Paired.</p>
+				<ul class="space-y-1 text-gray-300 list-disc pl-4">
+					<li>Integrated ticketing with secure QR validation.</li>
+					<li>Job & internship board tailored to your university.</li>
+					<li>Event of the Week spotlight placements.</li>
+				</ul>
+			</div>
+		</section>
+	</main>
+	<!-- Benefit Explanation Modal -->
+	<div id="benefitModal" class="fixed inset-0 z-[1400] hidden">
+		<div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+		<div class="absolute inset-x-0 top-0 mx-auto w-full max-w-sm p-4 animate-fade-in">
+			<div class="bg-white/10 border border-white/20 rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[88vh]">
+				<div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
+					<h3 id="benefitTitle" class="text-sm font-semibold"></h3>
+					<button id="closeBenefit" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"><i data-lucide="x" class="w-5 h-5"></i></button>
+				</div>
+				<div class="p-4 space-y-3 overflow-y-auto text-sm">
+					<p id="benefitLong" class="leading-relaxed text-gray-200"></p>
+				</div>
+				<div class="p-4 border-t border-white/10">
+					<button id="benefitCloseBottom" class="w-full py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-sm font-medium">Got it</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<style>#fixed-ui{position:fixed!important;} .no-scroll{overflow:hidden!important;} @keyframes fade-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}} .animate-fade-in{animation:fade-in .25s ease;} .sidebar-open{transform:translateX(0)!important;} #sidebar{transition:transform .3s ease-in-out;} #sidebar-overlay{transition:opacity .3s ease-in-out;} </style>
+	<script>
+		// After shared UI injection
+		document.addEventListener('DOMContentLoaded', ()=>{
+			lucide.createIcons();
+			// Inject dynamic benefits
+			const benefits=[
+				{icon:'zap', title:'Boost Credits', short:'Use credits to push products to the top.', explain:'Boost credits let you spotlight a product for 24 hours. It appears higher and gets more views. You can also save credits to activate or extend Premium.'},
+				{icon:'crown', title:'Highest Visibility', short:'Premium listings rank above others.', explain:'Your products are prioritized in search and category feeds so more buyers see them first.'},
+				{icon:'eye', title:'Viewer Insights', short:'See who viewed & view counts.', explain:'Track how many people opened your product and (where allowed) which accounts viewed it. Helps you follow up with warm leads.'},
+				{icon:'infinity', title:'Unlimited Posts', short:'Free users capped at 5.', explain:'Post as many products and ads as you want. Non‑premium users can only have 5 active listings.'},
+				{icon:'megaphone', title:'Homepage Ads', short:'Your products appear in ad slots.', explain:'Premium items can randomly appear in homepage ad placements increasing discovery beyond the marketplace.'},
+				{icon:'briefcase', title:'Opportunities', short:'See internships & biz gigs.', explain:'Access curated internship, side‑hustle and business opportunity listings only visible to Premium members.'},
+				{icon:'shield-check', title:'Trusted Flair', short:'Badge & animated ring.', explain:'Stand out with a premium badge and animated profile ring that signals trust & seriousness to buyers.'},
+				{icon:'filter', title:'Smart Filters', short:'Zero-comment & fresh sorting.', explain:'Advanced feed filters help you discover unsaturated opportunities and engage before others.'}
+			];
+			const grid=document.getElementById('premiumBenefits');
+			grid.innerHTML = benefits.map((b,i)=>`<div class="feature-card rounded-xl p-3 border border-white/10 space-y-1 relative group">
+				<i data-lucide="${b.icon}" class="w-4 h-4 text-orange-400"></i>
+				<p class="font-semibold leading-tight">${b.title}</p>
+				<p class="text-[10px] text-gray-300 line-clamp-2">${b.short}</p>
+				<button data-benefit="${i}" class="absolute top-2 right-2 text-[9px] px-2 py-0.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10">Explain</button>
+			</div>`).join('');
+			if(window.lucide) lucide.createIcons();
+			// Benefit modal logic
+			const modal=document.getElementById('benefitModal');
+			const titleEl=document.getElementById('benefitTitle');
+			const longEl=document.getElementById('benefitLong');
+			function openBenefit(idx){ const b=benefits[idx]; if(!b) return; titleEl.textContent=b.title; longEl.textContent=b.explain; modal.classList.remove('hidden'); document.body.classList.add('no-scroll'); if(window.lucide) lucide.createIcons(); }
+			function closeBenefit(){ modal.classList.add('hidden'); document.body.classList.remove('no-scroll'); }
+			document.addEventListener('click', e=>{ const btn=e.target.closest('button[data-benefit]'); if(btn){ openBenefit(btn.dataset.benefit); }});
+			document.getElementById('closeBenefit').addEventListener('click', closeBenefit);
+			document.getElementById('benefitCloseBottom').addEventListener('click', closeBenefit);
+			modal.addEventListener('click', e=>{ if(e.target===modal) closeBenefit(); });
+			function refresh(){
+				const isPrem = window.PairedState.isPremium();
+				document.getElementById('activePlan').classList.toggle('hidden', !isPrem);
+				document.querySelectorAll('.plan-btn').forEach(btn=>{ btn.textContent = isPrem? 'Change':'Subscribe'; });
+				const data = window.PairedTheme._read();
+				document.getElementById('boostCount').textContent = data.boostCredits||0;
+			}
+			refresh();
+			document.addEventListener('premium-change', refresh);
+			document.addEventListener('boost-credits-change', refresh);
+			document.getElementById('cancelPremium').addEventListener('click', ()=>{ window.PairedState.deactivatePremium(); alert('Premium canceled (simulation).'); });
+			document.getElementById('plans').addEventListener('click', e=>{
+				const btn = e.target.closest('.plan-btn'); if(!btn) return; const plan = btn.dataset.plan; if(!window.PairedState.isPremium()){ window.PairedState.activatePremium(); if(plan==='monthly'){ window.PairedState.addBoostCredits(2);} else if(plan==='semester'){ window.PairedState.addBoostCredits(15);} alert('Premium activated: '+plan+' plan (simulation)'); } else { alert('You are already Premium. (Plan change simulation)'); }
+			});
+			document.getElementById('addOneCredit').addEventListener('click', ()=>{ window.PairedState.addBoostCredits(1); alert('Purchased 1 credit (simulation)'); });
+			document.getElementById('addPackCredit').addEventListener('click', ()=>{ window.PairedState.addBoostCredits(5); alert('Purchased 5 credits (simulation)'); });
+		});
+	</script>
+</body>
+</html>

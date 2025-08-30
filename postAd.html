@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<title>Paired • Post Ad / Event</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script src="shared-ui.js"></script>
+	<style>
+		.tab-active-btn { background:linear-gradient(to right,var(--accent),#ec4899); color:#fff !important; }
+		html.theme-light .tab-active-btn { color:#fff !important; }
+		.drop-zone { position:relative; border:2px dashed var(--border-soft); border-radius:16px; padding:26px 18px; text-align:center; cursor:pointer; transition:.25s; }
+		.drop-zone.dragover { background:var(--bg-softest); border-color:var(--accent); }
+		.preview-grid img { object-fit:cover; width:100%; height:100%; }
+		.preview-tile { position:relative; }
+		.preview-tile button { position:absolute; top:4px; right:4px; }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+	<div class="absolute inset-0 -z-10 pointer-events-none">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+	</div>
+	<div class="w-full max-w-sm pb-24 relative z-10">
+		<header class="sticky top-0 z-40 backdrop-blur-md bg-white/10 px-4 py-3 flex items-center gap-2 shadow">
+			<button onclick="history.back()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Back"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+			<h1 class="text-sm font-semibold">Create • Ad / Event</h1>
+		</header>
+
+		<section class="px-4 pt-4">
+			<div class="flex bg-white/5 border border-white/10 rounded-full p-1 text-[12px] font-medium" id="postTabs">
+				<button data-tab-target="ad" class="tab-btn flex-1 py-2 rounded-full tab-active-btn">Post Ad</button>
+				<button data-tab-target="event" class="tab-btn flex-1 py-2 rounded-full hover:bg-white/10">Post Event</button>
+			</div>
+		</section>
+
+		<main class="px-4 pt-5 space-y-8" id="formsWrapper">
+			<!-- Post Ad Form -->
+			<form id="formAd" data-tab-content="ad" class="space-y-5">
+				<div>
+					<label class="block text-[12px] mb-2 font-semibold">Main Image</label>
+					<div id="adMainDrop" class="drop-zone text-[12px]">
+						<p class="mb-2 opacity-80"><i data-lucide="image" class="inline w-4 h-4 mr-1"></i> Click or drag an image here</p>
+						<input type="file" accept="image/*" class="hidden" id="adMainInput" />
+						<div id="adMainPreview" class="mt-2 hidden relative">
+							<img alt="preview" class="w-full h-40 object-cover rounded-lg border border-white/10" />
+							<button type="button" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 backdrop-blur flex items-center justify-center border border-white/20" id="adMainRemove" title="Remove"><i data-lucide="x" class="w-4 h-4"></i></button>
+						</div>
+					</div>
+				</div>
+				<div>
+					<label class="block text-[12px] mb-1">Advert Name</label>
+					<input required name="title" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] focus:outline-none" placeholder="e.g. Premium Headphones" />
+				</div>
+				<div>
+					<label class="block text-[12px] mb-1">Details</label>
+						<textarea name="details" rows="4" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] resize-none focus:outline-none" placeholder="Short description..."></textarea>
+				</div>
+				<div class="grid grid-cols-2 gap-3">
+					<div>
+						<label class="block text-[12px] mb-1">Telephone</label>
+						<input name="phone" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] focus:outline-none" placeholder="+233..." />
+					</div>
+					<div>
+						<label class="block text-[12px] mb-1">Paired DM Link</label>
+						<input name="dm" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] focus:outline-none" placeholder="/Dm.html?u=user" />
+					</div>
+				</div>
+				<button class="w-full py-3 rounded-full bg-gradient-to-r from-orange-600 to-pink-600 text-sm font-semibold flex items-center justify-center gap-2"><i data-lucide="megaphone" class="w-4 h-4"></i> Post Ad</button>
+			</form>
+
+			<!-- Post Event Form -->
+			<form id="formEvent" data-tab-content="event" class="space-y-5 hidden">
+				<div>
+					<label class="block text-[12px] mb-2 font-semibold">Cover Image</label>
+					<div id="eventCoverDrop" class="drop-zone text-[12px]">
+						<p class="mb-2 opacity-80"><i data-lucide="image" class="inline w-4 h-4 mr-1"></i> Click or drag a cover image</p>
+						<input type="file" accept="image/*" class="hidden" id="eventCoverInput" />
+						<div id="eventCoverPreview" class="mt-2 hidden relative">
+							<img alt="cover preview" class="w-full h-40 object-cover rounded-lg border border-white/10" />
+							<button type="button" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 backdrop-blur flex items-center justify-center border border-white/20" id="eventCoverRemove" title="Remove"><i data-lucide="x" class="w-4 h-4"></i></button>
+						</div>
+					</div>
+				</div>
+				<div>
+					<label class="block text-[12px] mb-2 font-semibold">Additional Images</label>
+					<div id="eventExtraDrop" class="drop-zone text-[12px]">
+						<p class="mb-2 opacity-80"><i data-lucide="images" class="inline w-4 h-4 mr-1"></i> Click or drag up to 6 images</p>
+						<input type="file" accept="image/*" multiple class="hidden" id="eventExtraInput" />
+						<div id="eventExtraPreview" class="grid grid-cols-3 gap-2 mt-3 preview-grid"></div>
+					</div>
+				</div>
+				<div>
+					<label class="block text-[12px] mb-1">Event Title</label>
+					<input required name="title" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] focus:outline-none" placeholder="e.g. Tech Meetup 2025" />
+				</div>
+				<div>
+					<label class="block text-[12px] mb-1">Event Details</label>
+						<textarea name="details" rows="4" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] resize-none focus:outline-none" placeholder="Describe the event..."></textarea>
+				</div>
+				<div class="grid grid-cols-2 gap-3">
+					<div>
+						<label class="block text-[12px] mb-1">Telephone</label>
+						<input name="phone" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] focus:outline-none" placeholder="+233..." />
+					</div>
+					<div>
+						<label class="block text-[12px] mb-1">Paired DM Link</label>
+						<input name="dm" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] focus:outline-none" placeholder="/Dm.html?u=user" />
+					</div>
+				</div>
+				<button class="w-full py-3 rounded-full bg-gradient-to-r from-orange-600 to-pink-600 text-sm font-semibold flex items-center justify-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Post Event</button>
+			</form>
+		</main>
+
+		<section class="px-4 pt-10 pb-24" id="previewOutput" hidden>
+			<h2 class="text-xs font-semibold mb-2 opacity-70">Submission JSON (demo)</h2>
+			<pre class="bg-white/5 border border-white/10 rounded-lg p-3 text-[10px] overflow-x-auto" id="outBox">{}</pre>
+		</section>
+	</div>
+
+	<script>
+		lucide.createIcons();
+		// Tabs logic
+		const tabs=document.querySelectorAll('#postTabs .tab-btn');
+		const contents=document.querySelectorAll('[data-tab-content]');
+		tabs.forEach(btn=> btn.addEventListener('click',()=>{
+			tabs.forEach(b=> b.classList.remove('tab-active-btn','tab-active'));
+			btn.classList.add('tab-active-btn','tab-active');
+			const target=btn.getAttribute('data-tab-target');
+			contents.forEach(c=>{ c.classList.toggle('hidden', c.getAttribute('data-tab-content')!==target); });
+		}));
+
+		function wireSingleImage(dropEl, inputEl, previewWrap, imgEl, removeBtn){
+			const open = ()=> inputEl.click();
+			dropEl.addEventListener('click', open);
+			['dragenter','dragover'].forEach(ev=> dropEl.addEventListener(ev,e=>{e.preventDefault(); dropEl.classList.add('dragover');}));
+			['dragleave','drop'].forEach(ev=> dropEl.addEventListener(ev,e=>{e.preventDefault(); dropEl.classList.remove('dragover');}));
+			dropEl.addEventListener('drop', e=>{ const file=e.dataTransfer.files[0]; if(file) load(file); });
+			inputEl.addEventListener('change',()=>{ if(inputEl.files[0]) load(inputEl.files[0]); });
+			removeBtn.addEventListener('click', e=>{ e.stopPropagation(); inputEl.value=''; previewWrap.classList.add('hidden'); });
+			function load(file){ const r=new FileReader(); r.onload=()=>{ imgEl.src=r.result; previewWrap.classList.remove('hidden'); }; r.readAsDataURL(file); }
+		}
+		wireSingleImage(document.getElementById('adMainDrop'), document.getElementById('adMainInput'), document.getElementById('adMainPreview'), document.querySelector('#adMainPreview img'), document.getElementById('adMainRemove'));
+		wireSingleImage(document.getElementById('eventCoverDrop'), document.getElementById('eventCoverInput'), document.getElementById('eventCoverPreview'), document.querySelector('#eventCoverPreview img'), document.getElementById('eventCoverRemove'));
+
+		// Multi-image for event
+		const extraDrop=document.getElementById('eventExtraDrop');
+		const extraInput=document.getElementById('eventExtraInput');
+		const extraPreview=document.getElementById('eventExtraPreview');
+		const MAX_EXTRA=6;
+		extraDrop.addEventListener('click', ()=> extraInput.click());
+		['dragenter','dragover'].forEach(ev=> extraDrop.addEventListener(ev,e=>{e.preventDefault(); extraDrop.classList.add('dragover');}));
+		['dragleave','drop'].forEach(ev=> extraDrop.addEventListener(ev,e=>{e.preventDefault(); extraDrop.classList.remove('dragover');}));
+		extraDrop.addEventListener('drop', e=> handleFiles(e.dataTransfer.files));
+		extraInput.addEventListener('change', ()=> handleFiles(extraInput.files));
+		function handleFiles(list){
+			const files=[...list].slice(0, MAX_EXTRA - extraPreview.children.length);
+			files.forEach(file=>{
+				const r=new FileReader();
+				r.onload=()=>{
+					const tile=document.createElement('div');
+					tile.className='preview-tile rounded-lg overflow-hidden border border-white/10 aspect-square';
+					tile.innerHTML=`<img src="${r.result}" alt="extra"/><button type="button" class="w-6 h-6 rounded-full bg-black/60 backdrop-blur flex items-center justify-center border border-white/20" title="Remove"><i data-lucide=\"x\" class=\"w-3 h-3\"></i></button>`;
+					tile.querySelector('button').addEventListener('click',()=> tile.remove());
+					extraPreview.appendChild(tile);
+					if(window.lucide) lucide.createIcons();
+				};
+				r.readAsDataURL(file);
+			});
+		}
+
+		// Demo submit capture
+		function serialize(form){ const fd=new FormData(form); const o={}; fd.forEach((v,k)=>{o[k]=v;}); return o; }
+		const out=document.getElementById('outBox');
+		function attachSubmit(id, type){
+			document.getElementById(id).addEventListener('submit', e=>{
+				e.preventDefault();
+				const data=serialize(e.target); data.type=type; data.timestamp=Date.now();
+				out.textContent=JSON.stringify(data,null,2);
+				document.getElementById('previewOutput').hidden=false;
+				window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+			});
+		}
+		attachSubmit('formAd','ad');
+		attachSubmit('formEvent','event');
+	</script>
+</body>
+</html>

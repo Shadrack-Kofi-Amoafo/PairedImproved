@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Paired • Seller Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="styles.css" />
+<script src="theme.js"></script>
+<script>window.PAGE_ACTIVE='market';</script>
+<script src="shared-ui.js"></script>
+<style>
+  .orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.55; animation:float 20s infinite ease-in-out; }
+  .orb1 { width:300px; height:300px; background:orange; top:5%; left:0%; animation-duration:25s; }
+  .orb2 { width:260px; height:260px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+  @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-35px)}}
+  .line-clamp-2{-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0" />
+  <title>Paired • Seller Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <script>window.PAGE_ACTIVE='market';</script>
+  <script src="shared-ui.js"></script>
+  <style>
+    .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:float 20s infinite ease-in-out}
+    .orb1{width:300px;height:300px;background:orange;top:5%;left:0;animation-duration:25s}
+    .orb2{width:260px;height:260px;background:purple;bottom:8%;right:5%;animation-duration:22s}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-35px)}}
+    .line-clamp-2{-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+  </div>
+  <main class="w-full max-w-sm relative z-10 pb-24 px-4 space-y-6" id="dashRoot">
+    <header class="pt-2 space-y-3">
+      <div class="space-y-1">
+        <h1 class="text-lg font-bold flex items-center gap-2"><i data-lucide="layout-dashboard" class="w-5 h-5 text-orange-400"></i>Dashboard</h1>
+        <p class="text-xs text-gray-300">Manage your listings, store & growth.</p>
+      </div>
+      <nav id="dashTabs" class="flex text-[11px] font-semibold bg-white/5 border border-white/10 rounded-full p-1 gap-1">
+        <button data-tab="listings" class="flex-1 py-2 rounded-full bg-orange-600 text-white">Listings</button>
+        <button data-tab="store" class="flex-1 py-2 rounded-full hover:bg-white/10 text-gray-300">Store</button>
+        <button data-tab="premium" class="flex-1 py-2 rounded-full hover:bg-white/10 text-gray-300">Premium</button>
+      </nav>
+    </header>
+
+    <!-- Listings Tab -->
+    <section data-panel="listings" class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="boxes" class="w-4 h-4 text-purple-400"></i>Your Listings</h2>
+        <button id="addListingBtn" class="text-[11px] px-3 py-1.5 rounded-full bg-orange-600 hover:bg-orange-500 font-medium flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i>Add</button>
+      </div>
+      <div id="listingLimitNote" class="text-[10px] text-gray-400"></div>
+      <div id="premiumTeaser" class="hidden relative overflow-hidden rounded-xl border border-orange-500/30 bg-gradient-to-br from-orange-600/15 via-pink-600/15 to-purple-700/20 p-4 text-[11px] space-y-2">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-pink-600 flex items-center justify-center shadow-inner"><i data-lucide="crown" class="w-5 h-5 text-white"></i></div>
+          <div class="flex-1">
+            <p class="text-xs font-bold tracking-wide">Sell Faster with Premium</p>
+            <p class="text-[10px] text-gray-200 leading-snug mt-0.5">Unlimited listings, boost credits & viewer insights.</p>
+          </div>
+        </div>
+        <div class="flex gap-2 pt-1">
+          <a href="upgradeTopremium.html" class="flex-1 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-center font-semibold">Upgrade</a>
+          <button id="dismissTeaser" class="px-3 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300">Later</button>
+        </div>
+        <span class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-tr from-orange-500/30 to-pink-500/30 blur-2xl pointer-events-none"></span>
+      </div>
+      <div id="listings" class="space-y-2"></div>
+    </section>
+
+    <!-- Store Tab -->
+    <section data-panel="store" class="space-y-3 hidden">
+      <h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="store" class="w-4 h-4 text-pink-400"></i>Your Store</h2>
+      <div class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3 text-[12px]">
+        <div class="space-y-2">
+          <label class="text-[10px] uppercase tracking-wide font-semibold block">Banner Image</label>
+          <div id="dashStoreBanner" class="relative h-28 w-full rounded-lg overflow-hidden border border-white/10 bg-black/30 bg-center bg-cover" style="background-image:url('https://picsum.photos/id/1040/800/400')">
+            <button id="changeDashBannerBtn" class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 hover:opacity-100 transition-opacity text-[11px] font-medium">Change Banner</button>
+            <input id="changeDashBanner" type="file" accept="image/*" class="hidden" />
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative w-20 h-20 rounded-full overflow-hidden border-2 border-orange-500">
+            <img id="dashAvatarImg" src="https://picsum.photos/id/1019/200/200" class="w-full h-full object-cover" alt="avatar">
+            <button id="changeDashAvatarBtn" class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 hover:opacity-100 transition-opacity text-[10px] font-semibold">Change</button>
+            <input id="changeDashAvatar" type="file" accept="image/*" class="hidden" />
+          </div>
+          <p class="text-[10px] text-gray-400 leading-snug flex-1">Customize banner & avatar to build trust and recognition.</p>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wide font-semibold block mb-1">Store Name</label>
+          <input id="storeName" type="text" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-sm focus:outline-none" placeholder="e.g. Ama's Tech Hub" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wide font-semibold block mb-1">Tagline</label>
+          <input id="storeTag" type="text" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-sm focus:outline-none" placeholder="Quick tagline" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wide font-semibold block mb-1">Theme Color</label>
+          <input id="storeColor" type="color" value="#f97316" class="w-full h-9 rounded cursor-pointer bg-black/30 border border-white/10" />
+        </div>
+        <button id="saveStore" class="w-full py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-sm font-medium">Save Store Settings</button>
+        <p id="storeSaved" class="hidden text-[10px] text-green-400">Saved!</p>
+      </div>
+    </section>
+
+    <!-- Premium Tab -->
+    <section data-panel="premium" class="space-y-3 hidden">
+      <h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="crown" class="w-4 h-4 text-yellow-400"></i>Premium Benefits</h2>
+      <div id="benefitsMini" class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2 text-[11px]"></div>
+      <a href="upgradeTopremium.html" class="block w-full text-center py-2 rounded-lg bg-gradient-to-r from-orange-600 to-pink-600 hover:from-orange-500 hover:to-pink-500 text-sm font-semibold">Upgrade to Premium</a>
+    </section>
+  </main>
+
+  <!-- Listing Modal -->
+  <div id="listingModal" class="fixed inset-0 z-[1000] hidden">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-x-0 top-0 mx-auto w-full max-w-sm p-4 animate-fade-in">
+      <div class="bg-white/10 border border-white/20 rounded-2xl shadow-xl flex flex-col max-h-[90vh]">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
+          <h3 id="listingModalTitle" class="text-sm font-semibold">New Listing</h3>
+          <button id="closeListingModal" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <form id="listingForm" class="p-4 space-y-3 overflow-y-auto text-[12px]">
+          <div>
+            <label class="text-[10px] font-semibold block mb-1">Title</label>
+            <input required id="listingTitle" type="text" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-sm focus:outline-none" />
+          </div>
+            <div class="flex gap-2">
+              <div class="flex-1">
+                <label class="text-[10px] font-semibold block mb-1">Price (GH₵)</label>
+                <input required id="listingPrice" type="number" min="0" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-sm focus:outline-none" />
+              </div>
+              <div class="w-28">
+                <label class="text-[10px] font-semibold block mb-1">Category</label>
+                <select id="listingCategory" class="w-full px-2 py-2 rounded-lg bg-black/30 border border-white/10 text-[12px] focus:outline-none"><option>Electronics</option><option>Fashion</option><option>Books</option><option>Furniture</option></select>
+              </div>
+            </div>
+            <div>
+              <label class="text-[10px] font-semibold block mb-1">Description</label>
+              <textarea id="listingDesc" rows="3" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-sm focus:outline-none resize-none"></textarea>
+            </div>
+            <div>
+              <label class="text-[10px] font-semibold block mb-1">Image</label>
+              <input id="listingImage" type="file" accept="image/*" class="block w-full text-[11px]" />
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+              <input id="listingBoost" type="checkbox" class="accent-orange-600 w-4 h-4" />
+              <label for="listingBoost" class="text-[11px] flex items-center gap-1"><i data-lucide="zap" class="w-3 h-3 text-yellow-400"></i>Boost this listing</label>
+            </div>
+            <button class="w-full py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-sm font-semibold">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Viewers Modal -->
+  <div id="viewersModal" class="fixed inset-0 z-[1050] hidden">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-x-0 top-0 mx-auto w-full max-w-sm p-4 animate-fade-in">
+      <div class="bg-white/10 border border-white/20 rounded-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 gap-3">
+          <div class="min-w-0 flex-1">
+            <h3 id="viewerModalTitle" class="text-sm font-semibold truncate">Listing Viewers</h3>
+            <p id="viewerModalMeta" class="text-[10px] text-gray-400 mt-0.5 truncate"></p>
+          </div>
+          <button id="closeViewers" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="viewersList" class="p-4 space-y-2 overflow-y-auto text-[12px]"></div>
+        <div class="p-3 border-t border-white/10 text-[10px] text-gray-400">Only you can see this. Viewer names may be limited.</div>
+      </div>
+    </div>
+  </div>
+
+  <style>@keyframes fade-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}} .animate-fade-in{animation:fade-in .25s ease} .no-scroll{overflow:hidden!important}</style>
+
+  <script>
+  (function(){
+    const LS_KEY='paired.dashboard';
+    const TAB_KEY='paired.dashboard.activeTab';
+    // --- Data helpers ---
+    const read=()=>{try{return JSON.parse(localStorage.getItem(LS_KEY)||'{}')}catch(e){return {}}};
+    const write=d=>localStorage.setItem(LS_KEY, JSON.stringify(d));
+    const getListings=()=>read().listings||[];
+    const setListings=lst=>{const d=read(); d.listings=lst; write(d); document.dispatchEvent(new CustomEvent('listings-change'));};
+    const saveStore=m=>{const d=read(); d.store={...(d.store||{}), ...m}; write(d);};
+    const getStore=()=>read().store||{};
+
+    // --- Elements ---
+    const listingsEl=document.getElementById('listings');
+    const limitNote=document.getElementById('listingLimitNote');
+    const addBtn=document.getElementById('addListingBtn');
+    const premiumTeaser=document.getElementById('premiumTeaser');
+    const form=document.getElementById('listingForm');
+    const modal=document.getElementById('listingModal');
+    const modalTitle=document.getElementById('listingModalTitle');
+    const benefitsMini=document.getElementById('benefitsMini');
+    const storeName=document.getElementById('storeName');
+    const storeTag=document.getElementById('storeTag');
+    const storeColor=document.getElementById('storeColor');
+    const storeSaved=document.getElementById('storeSaved');
+    const dashBanner=document.getElementById('dashStoreBanner');
+    const dashBannerInput=document.getElementById('changeDashBanner');
+    const dashAvatarImg=document.getElementById('dashAvatarImg');
+    const dashAvatarInput=document.getElementById('changeDashAvatar');
+
+    let editId=null;
+    const isPremium=()=> window.PairedState?.isPremium?.() || false;
+    const premiumLimit=()=> isPremium()? Infinity : 5;
+
+    // --- Render Listings ---
+    function renderListings(){
+      const data=getListings();
+      listingsEl.innerHTML = data.length? data.map(l=>{
+        const img=l.image || `https://picsum.photos/seed/${l.id}/100`;
+        return `<div class="group relative bg-white/5 border border-white/10 rounded-lg p-3 flex gap-3">
+          <div class="w-16 h-16 rounded-md bg-center bg-cover flex-shrink-0 border border-white/10" style="background-image:url('${img}')"></div>
+          <div class="flex-1 min-w-0 flex flex-col">
+            <p class="text-[12px] font-semibold leading-snug line-clamp-2">${l.title}</p>
+            <p class="text-orange-400 text-[12px] font-bold mt-0.5">GH₵${l.price}</p>
+            <div class="mt-auto pt-1 flex items-center justify-between gap-2">
+              <p class="text-[10px] text-gray-400 truncate">${l.category}${l.boost?" • <span class='text-yellow-400'>Boosted</span>":''}</p>
+              <button data-viewers="${l.id}" class="shrink-0 inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:text-orange-300 transition"><i data-lucide="eye" class="w-3 h-3"></i><span>${(l.views&&l.views.length)||0}</span></button>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <button data-edit="${l.id}" class="w-8 h-8 flex items-center justify-center rounded-md bg-white/10 hover:bg-white/20"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+            <button data-del="${l.id}" class="w-8 h-8 flex items-center justify-center rounded-md bg-white/10 hover:bg-red-600/40"><i data-lucide="trash" class="w-4 h-4"></i></button>
+          </div>
+        </div>`;
+      }).join('') : `<div class='text-[11px] text-gray-400 text-center py-6'>No listings yet. Click Add to create one.</div>`;
+      if(window.lucide) lucide.createIcons();
+      const limit=premiumLimit();
+      limitNote.innerHTML = isPremium()? '<span class="text-green-400">Unlimited listings (Premium)</span>' : `<span>${data.length}/${limit} active listings (upgrade for unlimited)</span>`;
+      addBtn.disabled=data.length>=limit; addBtn.classList.toggle('opacity-50', addBtn.disabled);
+      if(premiumTeaser) premiumTeaser.classList.toggle('hidden', isPremium());
+    }
+
+    // Global delegated handler (ensures viewers click always captured)
+    document.addEventListener('click', e=>{
+      const vBtn=e.target.closest('button[data-viewers]');
+      if(vBtn && typeof openViewers==='function'){
+        e.preventDefault();
+        openViewers(vBtn.getAttribute('data-viewers'));
+      }
+    });
+
+    // --- Modal Controls ---
+    const openModal=(item)=>{ modal.classList.remove('hidden'); document.body.classList.add('no-scroll'); editId=item?item.id:null; modalTitle.textContent=item?'Edit Listing':'New Listing'; if(item){ listingTitle.value=item.title; listingPrice.value=item.price; listingCategory.value=item.category; listingDesc.value=item.desc||''; listingBoost.checked=!!item.boost; listingImage.value=''; } else { form.reset(); listingBoost.checked=false; listingImage.value=''; } if(window.lucide) lucide.createIcons(); };
+    const closeModal=()=>{ modal.classList.add('hidden'); document.body.classList.remove('no-scroll'); };
+    document.getElementById('addListingBtn').addEventListener('click', ()=>openModal());
+    document.getElementById('closeListingModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+
+    // --- Form Submit ---
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const list=getListings();
+      const title=listingTitle.value.trim();
+      const price=parseFloat(listingPrice.value)||0;
+      const category=listingCategory.value;
+      const desc=listingDesc.value.trim();
+      const boost=listingBoost.checked;
+      const file=listingImage.files?.[0];
+      const finish=(img)=>{
+        if(editId){ const i=list.findIndex(l=>l.id===editId); if(i>-1){ list[i]={...list[i], title, price, category, desc, boost, image: img||list[i].image}; } }
+        else { list.unshift({ id:'l_'+Date.now(), title, price, category, desc, boost, image: img||null, created:Date.now() }); }
+        setListings(list); closeModal();
+      };
+      if(file){ const r=new FileReader(); r.onload=ev=>finish(ev.target.result); r.readAsDataURL(file);} else finish();
+    });
+
+    // --- Listings actions ---
+    listingsEl.addEventListener('click', e=>{
+      const editBtn=e.target.closest('[data-edit]'); if(editBtn){ const id=editBtn.getAttribute('data-edit'); const item=getListings().find(l=>l.id===id); if(item) openModal(item); return; }
+      const delBtn=e.target.closest('[data-del]'); if(delBtn){ const id=delBtn.getAttribute('data-del'); setListings(getListings().filter(l=>l.id!==id)); return; }
+    });
+
+    // --- Store Settings ---
+    function loadStore(){ const s=getStore(); storeName.value=s.name||''; storeTag.value=s.tag||''; storeColor.value=s.color||'#f97316'; if(s.banner) dashBanner.style.backgroundImage=`url('${s.banner}')`; if(s.avatar) dashAvatarImg.src=s.avatar; }
+    document.getElementById('saveStore').addEventListener('click', ()=>{ saveStore({ name:storeName.value.trim(), tag:storeTag.value.trim(), color:storeColor.value }); storeSaved.classList.remove('hidden'); setTimeout(()=>storeSaved.classList.add('hidden'),1600); });
+    document.getElementById('changeDashBannerBtn').addEventListener('click', ()=> dashBannerInput.click());
+    dashBannerInput.addEventListener('change', e=>{ const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=ev=>{ dashBanner.style.backgroundImage=`url('${ev.target.result}')`; saveStore({ banner:ev.target.result }); }; r.readAsDataURL(f); });
+    document.getElementById('changeDashAvatarBtn').addEventListener('click', ()=> dashAvatarInput.click());
+    dashAvatarInput.addEventListener('change', e=>{ const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=ev=>{ dashAvatarImg.src=ev.target.result; saveStore({ avatar:ev.target.result }); }; r.readAsDataURL(f); });
+
+    // --- Benefits ---
+    const benefits=[
+      {icon:'infinity', text:'Unlimited listings (no limits)'},
+      {icon:'zap', text:'Boost credits to push products'},
+      {icon:'crown', text:'Top placement & visibility'},
+      {icon:'eye', text:'Viewer insights & counts'},
+      {icon:'megaphone', text:'Homepage ad placements'},
+      {icon:'briefcase', text:'Access special opps & perks'}
+    ];
+    benefitsMini.innerHTML = benefits.map(b=>`<div class='flex items-start gap-2'><i data-lucide="${b.icon}" class='w-4 h-4 text-orange-400'></i><p class='flex-1 leading-snug'>${b.text}</p></div>`).join('');
+
+    // --- Premium Teaser Dismiss ---
+    document.getElementById('dismissTeaser')?.addEventListener('click', ()=> premiumTeaser?.remove());
+
+    // --- Tabs ---
+    const tabs=document.getElementById('dashTabs');
+    function activateTab(id){
+      tabs.querySelectorAll('button').forEach(b=>{ const active=b.getAttribute('data-tab')===id; b.classList.toggle('bg-orange-600',active); b.classList.toggle('text-white',active); b.classList.toggle('text-gray-300',!active); });
+      document.querySelectorAll('[data-panel]').forEach(p=> p.classList.toggle('hidden', p.getAttribute('data-panel')!==id));
+      try{ localStorage.setItem(TAB_KEY,id);}catch(e){}
+      if(id==='listings') renderListings();
+      if(id==='store') loadStore();
+    }
+    tabs.addEventListener('click', e=>{ const b=e.target.closest('[data-tab]'); if(!b) return; activateTab(b.getAttribute('data-tab')); });
+    const startTab = (()=>{ try{ const s=localStorage.getItem(TAB_KEY); if(s && tabs.querySelector(`[data-tab="${s}"]`)) return s; }catch(e){} return 'listings'; })();
+    activateTab(startTab);
+
+    // --- Viewers Modal (mock data) ---
+    const viewersModal=document.getElementById('viewersModal');
+    const viewersList=document.getElementById('viewersList');
+    document.getElementById('closeViewers').addEventListener('click', ()=>{ viewersModal.classList.add('hidden'); document.body.classList.remove('no-scroll'); });
+    function mockViewers(item){ const names=['Ama Kusi','Kwame Boateng','Esi Nyarko','Yaw Ofori','Aisha Mensah','Kojo Mensah','Kofi Adjei']; return names.slice(0,Math.min(5,Math.ceil(Math.random()*names.length))).map((n,i)=>({id:item.id+'_'+i,name:n,time:(1+i)+'h'})); }
+    function openViewers(id){
+      const list=getListings();
+      const item=list.find(l=>l.id===id);
+      if(!item) return;
+      if(!Array.isArray(item.views) || item.views.length===0){ item.views=mockViewers(item); setListings(list); }
+      const titleEl=document.getElementById('viewerModalTitle');
+      const metaEl=document.getElementById('viewerModalMeta');
+      if(titleEl) titleEl.textContent = item.title || 'Listing Viewers';
+      const count=item.views.length;
+      if(metaEl) metaEl.textContent = `${count} view${count!==1?'s':''}`;
+      viewersList.innerHTML = count ? item.views.map(v=>`<div class='flex items-center gap-3 bg-white/5 border border-white/10 rounded-lg p-2'>
+        <div class='w-9 h-9 rounded-full overflow-hidden border border-white/10'><img src='https://picsum.photos/seed/${v.id}/80/80' class='w-full h-full object-cover'></div>
+        <div class='flex-1 min-w-0'>
+          <p class='text-[11px] font-semibold leading-tight'>${v.name}</p>
+          <p class='text-[9px] text-gray-400'>${v.time} ago</p>
+        </div>
+        <a class='ml-auto text-[10px] px-2 py-1 rounded bg-orange-600 hover:bg-orange-500 font-medium whitespace-nowrap' href='PeopleProfile.html'>See Profile</a>
+      </div>`).join('') : `<div class='text-[11px] text-gray-400 text-center py-6'>No viewers yet.</div>`;
+      viewersModal.classList.remove('hidden');
+      document.body.classList.add('no-scroll');
+      if(window.lucide) lucide.createIcons();
+    }
+    window.openViewers=openViewers; // expose if needed elsewhere
+
+    // --- Events ---
+    document.addEventListener('listings-change', renderListings);
+    document.addEventListener('premium-change', renderListings);
+
+    // Initial renders
+    renderListings();
+    loadStore();
+  })();
+  </script>
+</body>
+</html>

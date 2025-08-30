@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sign Up - Paired</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <style>
+    /* Custom radial glowing gradients */
+    .orb-lemon {
+      background: radial-gradient(circle, rgba(255, 255, 0, 0.253) 0%, rgba(0,0,0,0) 70%);
+      filter: blur(60px);
+    }
+    .orb-violet {
+      background: radial-gradient(circle, rgba(186, 85, 211, 0.226) 0%, rgba(0,0,0,0) 70%);
+      filter: blur(60px);
+    }
+
+    /* Floating animations */
+    @keyframes float1 {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(30px, -20px); }
+      50%  { transform: translate(-20px, 25px); }
+      75%  { transform: translate(-15px, -10px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes float2 {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-25px, 20px); }
+      50%  { transform: translate(20px, -30px); }
+      75%  { transform: translate(10px, 15px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .animate-orb1 {
+      animation: float1 15s ease-in-out infinite;
+    }
+    .animate-orb2 {
+      animation: float2 18s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-black p-4 overflow-x-hidden relative">
+  
+  <!-- Neon Orbs Background -->
+  <div class="absolute inset-0 -z-10">
+    <!-- Violet top-right -->
+    <div class="absolute top-0 right-0 w-72 h-72 orb-violet rounded-full animate-orb1"></div>
+    <!-- Lemon bottom-left -->
+    <div class="absolute bottom-0 left-0 w-60 h-60 orb-lemon rounded-full animate-orb2"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="flex gap-2 items-center">
+    <a href="index.html">
+      <button class="text-orange-500 w-10 h-10 rounded bg-gray-500/10 backdrop-blur-md border border-gray-800 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+    </a>
+    <h1 class="text-orange-500 text-2xl">Sign Up</h1>
+  </div>
+
+  <p class="text-gray-400 text-sm mt-4">Sign up to Paired using your existing accounts</p>
+  
+  <!-- Social logins -->
+  <div class="flex gap-4 items-center mt-3">
+    <button class="flex items-center gap-2 border border-gray-800 rounded text-sm text-white py-4 px-9 hover:bg-gray-800 transition">
+      <!-- Google Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-5 h-5">
+        <path fill="#4285F4" d="M24 9.5c3.2 0 6 .9 8.2 2.6l6.1-6.1C34.1 2.5 29.4 1 24 1 14.6 1 6.4 6.9 2.9 15.3l7.2 5.6C11.6 14.1 17.3 9.5 24 9.5z"/>
+        <path fill="#34A853" d="M46.1 24.5c0-1.5-.1-3-.3-4.5H24v9h12.5c-.6 3-2.2 5.5-4.7 7.2l7.2 5.6c4.2-3.9 7.1-9.6 7.1-17.3z"/>
+        <path fill="#FBBC05" d="M10.1 28.9c-1.2-3.5-1.2-7.2 0-10.7L2.9 12.6c-2.5 5-2.5 11 0 16l7.2-5.7z"/>
+        <path fill="#EA4335" d="M24 47c5.4 0 10.1-1.8 13.5-4.9l-7.2-5.6c-2 1.3-4.5 2-7.3 2-6.7 0-12.4-4.6-14.5-10.9l-7.2 5.6C6.4 41.1 14.6 47 24 47z"/>
+      </svg>
+      Google
+    </button>
+
+    <button class="flex items-center gap-2 border border-gray-800 rounded text-sm text-white py-4 px-9 hover:bg-gray-800 transition">
+      <!-- Facebook Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="w-5 h-5 fill-blue-500">
+        <path d="M279.14 288l14.22-92.66h-88.91V127.91c0-25.35 12.42-50.06 52.24-50.06H293V6.26S273.48 0 252.35 0c-73.14 0-121.15 44.38-121.15 124.72V195.3H86.41V288h44.79v224h92.66V288z"/>
+      </svg>
+      Facebook
+    </button>
+  </div>
+
+  <!-- Form -->
+  <div class="flex flex-col mt-8 space-y-3">
+    <label class="text-md text-white font-thin">Name</label>
+    <input type="text" class="bg-black border border-gray-800 rounded h-9 px-2 text-white focus:border-orange-500 outline-none" />
+
+    <label class="text-md text-white font-thin">Email</label>
+    <input type="email" class="bg-black border border-gray-800 rounded h-9 px-2 text-white focus:border-orange-500 outline-none" />
+
+    <label class="text-md text-white font-thin">Password</label>
+    <div class="relative">
+      <input id="suPassword" type="password" class="w-full bg-black border border-gray-800 rounded h-9 pr-12 px-2 text-white focus:border-orange-500 outline-none" />
+      <button type="button" id="toggleSuPw" class="absolute inset-y-0 right-8 px-2 text-[11px] text-gray-400 hover:text-white">Show</button>
+      <span id="pwStrength" class="absolute inset-y-0 right-0 flex items-center pr-2 text-[10px] text-gray-500"></span>
+    </div>
+
+    <label class="text-md text-white font-thin">Confirm Password</label>
+    <div class="relative">
+      <input id="suPassword2" type="password" class="w-full bg-black border border-gray-800 rounded h-9 pr-12 px-2 text-white focus:border-orange-500 outline-none" />
+      <button type="button" id="toggleSuPw2" class="absolute inset-y-0 right-0 px-2 text-[11px] text-gray-400 hover:text-white">Show</button>
+    </div>
+
+    <button id="signupSubmit" class="mt-4 rounded bg-orange-500 text-sm text-white py-2 hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed">Create Account</button>
+    
+    <p class="text-center text-gray-400 text-sm mt-2">
+      I have an account already,
+      <a href="signin.html" class="text-orange-400">Sign In</a>
+    </p>
+  </div>
+<script>
+ (function(){
+  const name=document.querySelector('input[type="text"]');
+  const email=document.querySelector('input[type="email"]');
+  const pw=document.getElementById('suPassword');
+  const pw2=document.getElementById('suPassword2');
+  const submit=document.getElementById('signupSubmit');
+  const strength=document.getElementById('pwStrength');
+  function score(p){ let s=0; if(p.length>=8) s++; if(/[A-Z]/.test(p)) s++; if(/[0-9]/.test(p)) s++; if(/[^A-Za-z0-9]/.test(p)) s++; return s; }
+  function strengthLabel(s){ return ['Weak','Fair','Good','Strong'][s-1]||''; }
+  function renderStrength(){ const s=score(pw.value); strength.textContent=strengthLabel(s); strength.style.color= s>=3? '#f97316': '#9ca3af'; }
+  function validate(){ const ok = name.value.trim().length>1 && /.+@.+\..+/.test(email.value) && pw.value.length>=6 && pw.value===pw2.value; submit.disabled=!ok; }
+  [name,email,pw,pw2].forEach(el=> el.addEventListener('input', ()=>{ renderStrength(); validate(); }));
+  renderStrength(); validate();
+  document.getElementById('toggleSuPw').addEventListener('click', (e)=>{ pw.type = pw.type==='password'?'text':'password'; e.target.textContent = pw.type==='password'?'Show':'Hide'; });
+  document.getElementById('toggleSuPw2').addEventListener('click', (e)=>{ pw2.type = pw2.type==='password'?'text':'password'; e.target.textContent = pw2.type==='password'?'Show':'Hide'; });
+  submit.addEventListener('click', e=>{ e.preventDefault(); if(submit.disabled) return; // simulate account create
+    const users=JSON.parse(localStorage.getItem('paired.users')||'[]'); users.push({ name:name.value.trim(), email:email.value.trim(), created:Date.now() }); localStorage.setItem('paired.users', JSON.stringify(users)); window.location.href='signin.html'; });
+ })();
+</script>
+</body>
+</html>

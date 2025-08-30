@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Paired • Messages</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script>window.PAGE_ACTIVE='home';</script>
+	<script src="shared-ui-core.js" defer></script>
+	<script src="shared-ui-data.js" defer></script>
+	<script src="shared-ui-extras.js" defer></script>
+	<style>
+		/* Orbs animation (consistent with your other pages) */
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+		.orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+		.orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+		.no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
+		.no-scrollbar::-webkit-scrollbar { display:none; }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+
+	<!-- Orbs Background -->
+	<div class="absolute inset-0 -z-10">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+		<div class="orb orb3"></div>
+	</div>
+
+	<!-- Page Wrapper -->
+	<div class="w-full max-w-sm relative z-10 pt-[80px]">
+		<div id="fixed-ui" class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-sm z-50"><div class="backdrop-blur-md bg-black/60 border-b border-white/15 shadow-lg"><div class="px-2 py-2 flex items-center gap-3"><button onclick="history.back()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Back"><i data-lucide="chevron-left" class="w-5 h-5"></i></button><h1 class="text-base font-semibold">Chats</h1></div></div></div>
+		<div id="sidebar-container" class="fixed inset-0 z-[1001] pointer-events-none"><div id="sidebar-overlay" class="absolute inset-0 bg-black/60 opacity-0 hidden transition-opacity"></div><div id="sidebar" style="transform:translateX(-100%);" class="relative z-10 w-64 h-full bg-black/60 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col"><div class="flex items-center gap-3 mb-8"><div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500"><img src="https://picsum.photos/id/1019/80/80" alt="user" class="w-full h-full object-cover"></div><div><p class="font-semibold flex items-center">You <span data-premium-badge></span></p><p class="text-xs text-gray-400">@your_username</p></div></div><nav class="flex flex-col space-y-1 text-gray-300 text-sm"><a href="profile.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="user" class="w-5 h-5"></i><span>Profile</span></a><a href="upgradeTopremium.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i><span>Go Premium</span></a><a href="market.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span>Marketplace</span></a><a href="Bookmarks.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Bookmarks</span></a><a href="postAd.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="megaphone" class="w-5 h-5"></i><span>Post Ad or Event</span></a><a href="Settings.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><i data-lucide="settings" class="w-5 h-5"></i><span>Settings</span></a><div class="flex items-center justify-between px-4 py-2.5 rounded-lg hover:bg-white/10 hover:text-white transition"><div class="flex items-center gap-3"><i data-lucide="moon" class="w-5 h-5"></i><span>Theme</span></div><label class="inline-flex items-center cursor-pointer select-none"><input type="checkbox" data-theme-toggle class="sr-only peer" /><span class="w-10 h-5 bg-white/15 peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-pink-600 rounded-full relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></div></nav><div class="mt-auto pt-6 border-t border-white/10"><a href="index.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-red-500/20 text-red-400 hover:text-red-300 transition"><i data-lucide="log-out" class="w-5 h-5"></i><span>Logout</span></a></div></div></div>
+		<!-- Chat List -->
+		<main class="">
+			<!-- Individual Chat Item -->
+			<a href="Dm.html" class="flex items-center gap-4 px-4 py-3 hover:bg-white/5 transition-colors duration-200">
+				<div class="relative flex-shrink-0">
+					<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500">
+						<img src="https://picsum.photos/id/1012/80/80" class="w-full h-full object-cover" alt="avatar" />
+					</div>
+					<!-- Online status indicator -->
+					<span class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-black"></span>
+				</div>
+				<div class="flex-1 min-w-0 border-b border-white/10 pb-3">
+					<div class="flex items-center justify-between">
+						<p class="text-sm font-semibold truncate">Ama Kusi</p>
+						<p class="text-[11px] text-gray-400">10:45 AM</p>
+					</div>
+					<div class="flex items-center justify-between mt-1">
+						<p class="text-xs text-gray-400 truncate">Awesome! See you then. Can't wait!</p>
+						<span class="flex items-center justify-center text-[10px] font-bold text-white bg-orange-600 w-4 h-4 rounded-full">2</span>
+					</div>
+				</div>
+			</a>
+
+			<!-- Individual Chat Item -->
+			<a href="Dm.html" class="flex items-center gap-4 px-4 py-3 hover:bg-white/5 transition-colors duration-200">
+				<div class="relative flex-shrink-0">
+					<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-transparent">
+						<img src="https://picsum.photos/id/1005/80/80" class="w-full h-full object-cover" alt="avatar" />
+					</div>
+				</div>
+				<div class="flex-1 min-w-0 border-b border-white/10 pb-3">
+					<div class="flex items-center justify-between">
+						<p class="text-sm font-semibold truncate">Kwame Boateng</p>
+						<p class="text-[11px] text-gray-400">9:30 AM</p>
+					</div>
+					<div class="flex items-center justify-between mt-1">
+						<p class="text-xs text-gray-400 truncate">You sent a photo. 📷</p>
+						<!-- No notification bubble -->
+					</div>
+				</div>
+			</a>
+
+			<!-- Individual Chat Item -->
+			<a href="Dm.html" class="flex items-center gap-4 px-4 py-3 hover:bg-white/5 transition-colors duration-200">
+				<div class="relative flex-shrink-0">
+					<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500">
+						<img src="https://picsum.photos/id/1018/80/80" class="w-full h-full object-cover" alt="avatar" />
+					</div>
+					<span class="absolute bottom-0 right-0 block h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-black"></span>
+				</div>
+				<div class="flex-1 min-w-0 border-b border-white/10 pb-3">
+					<div class="flex items-center justify-between">
+						<p class="text-sm font-semibold truncate">Esi Nyarko</p>
+						<p class="text-[11px] text-gray-400">Yesterday</p>
+					</div>
+					<div class="flex items-center justify-between mt-1">
+						<p class="text-xs text-gray-400 truncate">Thanks for the help with the project!</p>
+						<span class="flex items-center justify-center text-[10px] font-bold text-white bg-orange-600 w-4 h-4 rounded-full">1</span>
+					</div>
+				</div>
+			</a>
+
+			<!-- Individual Chat Item -->
+			<a href="Dm.html" class="flex items-center gap-4 px-4 py-3 hover:bg-white/5 transition-colors duration-200">
+				<div class="relative flex-shrink-0">
+					<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-transparent">
+						<img src="https://picsum.photos/id/1025/80/80" class="w-full h-full object-cover" alt="avatar" />
+					</div>
+				</div>
+				<div class="flex-1 min-w-0 border-b border-white/10 pb-3">
+					<div class="flex items-center justify-between">
+						<p class="text-sm font-semibold truncate">Mimi Osei</p>
+						<p class="text-[11px] text-gray-400">Yesterday</p>
+					</div>
+					<div class="flex items-center justify-between mt-1">
+						<p class="text-xs text-gray-400 truncate">Haha that's hilarious 😂</p>
+						<!-- No notification bubble -->
+					</div>
+				</div>
+			</a>
+			
+			<!-- Individual Chat Item -->
+			<a href="Dm.html" class="flex items-center gap-4 px-4 py-3 hover:bg-white/5 transition-colors duration-200">
+				<div class="relative flex-shrink-0">
+					<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-transparent">
+						<img src="https://picsum.photos/id/1027/80/80" class="w-full h-full object-cover" alt="avatar" />
+					</div>
+				</div>
+				<div class="flex-1 min-w-0 pb-3">
+					<div class="flex items-center justify-between">
+						<p class="text-sm font-semibold truncate">Aisha Mensah</p>
+						<p class="text-[11px] text-gray-400">2 days ago</p>
+					</div>
+					<div class="flex items-center justify-between mt-1">
+						<p class="text-xs text-gray-400 truncate">Let's catch up soon.</p>
+						<!-- No notification bubble -->
+					</div>
+				</div>
+			</a>
+
+		</main>
+	</div>
+
+	<script>
+		lucide.createIcons();
+	</script>
+</body>
+</html>

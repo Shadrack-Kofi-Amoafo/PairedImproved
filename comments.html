@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Paired • Comments</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script>window.PAGE_ACTIVE='home';</script>
+	<script src="shared-ui.js"></script>
+	<style>
+		/* Orbs animation */
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+		.orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+		.orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+		.no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
+		.no-scrollbar::-webkit-scrollbar { display:none; }
+		/* Light theme refinements for comment bubbles */
+		html.theme-light .comment-bubble { background: var(--bg-soft) !important; border:1px solid var(--border-soft); }
+		html.theme-light .comment-bubble-nested { background: var(--bg-softer) !important; }
+		html.theme-light header .backdrop-blur-md, html.theme-light footer .backdrop-blur-md { background: var(--bg-soft) !important; }
+		html.theme-light header .border-white\/20, html.theme-light footer .border-white\/20 { border-color: var(--border-soft) !important; }
+		html.theme-light .like-meta { color: var(--text-muted) !important; }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+
+	<!-- Orbs Background -->
+	<div class="absolute inset-0 -z-10">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+		<div class="orb orb3"></div>
+	</div>
+
+	<!-- Page Wrapper -->
+		<div class="w-full max-w-sm relative z-10" data-adjust-offset>
+
+		<!-- Comments List -->
+		<main class="p-4 space-y-5">
+			<!-- Comment Item -->
+			<div class="flex items-start gap-3">
+				<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+					<img src="https://picsum.photos/id/1012/80/80" class="w-full h-full object-cover" alt="avatar" />
+				</div>
+				<div>
+					<div class="bg-white/10 p-3 rounded-lg rounded-tl-none comment-bubble">
+						<p class="text-sm font-semibold">Ama Kusi</p>
+						<p class="text-sm leading-snug mt-1">This is amazing! So great to see the community coming together for a good cause.</p>
+					</div>
+					<div class="flex items-center gap-3 text-[11px] text-gray-400 px-2 pt-1.5">
+						<span>5h</span>
+						<button class="font-semibold hover:underline">Like</button>
+						<button class="font-semibold hover:underline">Reply</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Comment Item with Reply -->
+			<div class="flex items-start gap-3">
+				<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+					<img src="https://picsum.photos/id/1027/80/80" class="w-full h-full object-cover" alt="avatar" />
+				</div>
+				<div>
+					<div class="bg-white/10 p-3 rounded-lg rounded-tl-none comment-bubble">
+						<p class="text-sm font-semibold">Aisha Mensah</p>
+						<p class="text-sm leading-snug mt-1">I was there! Such a fantastic event. We should do this more often.</p>
+					</div>
+					<div class="flex items-center gap-3 text-[11px] text-gray-400 px-2 pt-1.5">
+						<span>4h</span>
+						<button class="font-semibold text-orange-400 hover:underline">Liked</button>
+						<button class="font-semibold hover:underline">Reply</button>
+						<span class="text-gray-500">· 2 likes</span>
+					</div>
+					
+					<!-- Reply to Comment -->
+					<div class="flex items-start gap-3 mt-3">
+						<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+							<img src="https://picsum.photos/id/1018/80/80" class="w-full h-full object-cover" alt="reply avatar" />
+						</div>
+						<div>
+							<div class="bg-white/5 p-3 rounded-lg rounded-tl-none comment-bubble-nested">
+								<p class="text-sm font-semibold">Esi Nyarko <span class="text-gray-400 font-normal text-xs">(Author)</span></p>
+								<p class="text-sm leading-snug mt-1">Totally agree, Aisha! Let's plan another one for next month.</p>
+							</div>
+							<div class="flex items-center gap-3 text-[11px] text-gray-400 px-2 pt-1.5">
+								<span>4h</span>
+								<button class="font-semibold hover:underline">Like</button>
+								<button class="font-semibold hover:underline">Reply</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Comment Item -->
+			<div class="flex items-start gap-3">
+				<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+					<img src="https://picsum.photos/id/1005/80/80" class="w-full h-full object-cover" alt="avatar" />
+				</div>
+				<div>
+					<div class="bg-white/10 p-3 rounded-lg rounded-tl-none comment-bubble">
+						<p class="text-sm font-semibold">Kwame Boateng</p>
+						<p class="text-sm leading-snug mt-1">Great pictures!</p>
+					</div>
+					<div class="flex items-center gap-3 text-[11px] text-gray-400 px-2 pt-1.5">
+						<span>2h</span>
+						<button class="font-semibold hover:underline">Like</button>
+						<button class="font-semibold hover:underline">Reply</button>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Comment Input Footer -->
+		<footer class="flex-shrink-0 p-2">
+			<div class="backdrop-blur-md bg-white/10 border-t border-white/20 p-2 flex items-center gap-2">
+				<div class="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
+					<img src="https://picsum.photos/id/1019/40/40" alt="user avatar" class="w-full h-full object-cover" />
+				</div>
+				<input type="text" placeholder="Write a comment..." class="flex-1 bg-black/20 border border-white/10 rounded-full px-4 py-2 text-sm placeholder-gray-400 focus:outline-none focus:border-orange-500">
+				<button class="p-2 text-gray-300 hover:text-orange-400"><i data-lucide="send" class="w-5 h-5"></i></button>
+			</div>
+		</footer>
+	</div>
+
+	<script>
+		lucide.createIcons();
+	</script>
+</body>
+</html>

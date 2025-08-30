@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<title>Paired • Notifications</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="stylesheet" href="styles.css" />
+	<script src="theme.js"></script>
+	<script>window.PAGE_ACTIVE='notifications';</script>
+	<script src="shared-ui.js"></script>
+	<style>
+		.orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+		.orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+		.orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+		.orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+		@keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+		.no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
+		.no-scrollbar::-webkit-scrollbar { display:none; }
+		.notif-unread { position:relative; }
+		.notif-unread:after { content:""; position:absolute; top:10px; left:8px; width:8px; height:8px; background:linear-gradient(135deg,#f97316,#d946ef); border-radius:50%; box-shadow:0 0 6px #f97316aa; }
+	</style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+
+	<!-- Orbs Background -->
+	<div class="absolute inset-0 -z-10 pointer-events-none">
+		<div class="orb orb1"></div>
+		<div class="orb orb2"></div>
+		<div class="orb orb3"></div>
+	</div>
+
+	<div class="w-full max-w-sm relative z-10" data-adjust-offset>
+
+		<!-- Tabs -->
+		<div class="px-4 pt-4 sticky top-[104px] z-40"> <!-- approximate header height offset -->
+			<div class="flex bg-white/5 border border-white/10 rounded-full p-1 text-[12px] font-medium">
+				<button data-tab="all" class="notif-tab flex-1 py-2 rounded-full bg-orange-600">All</button>
+				<button data-tab="mentions" class="notif-tab flex-1 py-2 rounded-full hover:bg-white/10">Mentions</button>
+			</div>
+		</div>
+
+		<!-- Notifications List -->
+		<main id="notif-feed" class="px-4 pt-4 pb-16 space-y-8">
+			<!-- Today Group -->
+			<section data-group="today" class="space-y-3">
+				<h2 class="text-xs uppercase tracking-wider text-gray-400">Today</h2>
+				<div class="space-y-2" id="today-list">
+					<div class="notif-item notif-unread flex gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition" data-type="like">
+						<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1005/80/80" alt="avatar" class="w-full h-full object-cover" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-[13px] leading-snug"><span class="font-semibold">Kwame Boateng</span> liked your post <span class="text-orange-400">“Study group reflections”</span>.</p>
+							<p class="text-[10px] text-gray-400 mt-1">2m • Post • Public</p>
+						</div>
+						<button class="mark-read text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20">Mark</button>
+					</div>
+					<div class="notif-item notif-unread flex gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition" data-type="mention">
+						<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1012/80/80" alt="avatar" class="w-full h-full object-cover" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-[13px] leading-snug"><span class="font-semibold">Ama Kusi</span> mentioned you in a comment: <span class="italic text-gray-300">“We should invite @you next time.”</span></p>
+							<p class="text-[10px] text-gray-400 mt-1">12m • Comment • Friends</p>
+						</div>
+						<button class="mark-read text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20">Mark</button>
+					</div>
+					<div class="notif-item notif-unread flex gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition" data-type="friend">
+						<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1018/80/80" alt="avatar" class="w-full h-full object-cover" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-[13px] leading-snug"><span class="font-semibold">Esi Nyarko</span> accepted your friend request.</p>
+							<p class="text-[10px] text-gray-400 mt-1">25m • Friends</p>
+						</div>
+						<button class="mark-read text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20">Mark</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- Earlier Group -->
+			<section data-group="earlier" class="space-y-3">
+				<h2 class="text-xs uppercase tracking-wider text-gray-400">Earlier</h2>
+				<div class="space-y-2" id="earlier-list">
+					<div class="notif-item flex gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition" data-type="market">
+						<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1047/80/80" alt="avatar" class="w-full h-full object-cover" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-[13px] leading-snug"><span class="font-semibold">Selorm Gbadz</span> messaged about your listing <span class="text-orange-400">“Gaming Laptop 16GB RAM RTX”</span>.</p>
+							<p class="text-[10px] text-gray-400 mt-1">Yesterday • Marketplace</p>
+						</div>
+						<button class="mark-read text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20 hidden">Mark</button>
+					</div>
+					<div class="notif-item flex gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition" data-type="group">
+						<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1067/80/80" alt="avatar" class="w-full h-full object-cover" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-[13px] leading-snug"><span class="font-semibold">Campus Devs</span> event starts soon: <span class="text-orange-400">“Hack Night Sprint”</span>.</p>
+							<p class="text-[10px] text-gray-400 mt-1">Yesterday • Group</p>
+						</div>
+						<button class="mark-read text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20 hidden">Mark</button>
+					</div>
+					<div class="notif-item flex gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition" data-type="like">
+						<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500 flex-shrink-0">
+							<img src="https://picsum.photos/id/1027/80/80" alt="avatar" class="w-full h-full object-cover" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-[13px] leading-snug"><span class="font-semibold">Aisha Mensah</span> reacted ❤️ to your photo.</p>
+							<p class="text-[10px] text-gray-400 mt-1">2d • Post</p>
+						</div>
+						<button class="mark-read text-[10px] px-2 py-1 rounded bg-white/10 hover:bg-white/20 hidden">Mark</button>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		lucide.createIcons();
+		const tabs = document.querySelectorAll('.notif-tab');
+		tabs.forEach(btn=> btn.addEventListener('click', ()=> {
+			tabs.forEach(b=> { b.classList.remove('bg-orange-600'); b.classList.add('hover:bg-white/10'); });
+			btn.classList.add('bg-orange-600');
+			// filter notifications
+			const type = btn.dataset.tab;
+			document.querySelectorAll('.notif-item').forEach(item=>{
+				if(type==='all') { item.classList.remove('hidden'); }
+				else { item.classList.toggle('hidden', item.dataset.type!=='mention'); }
+			});
+		}));
+		// mark read
+		document.addEventListener('click', e=>{
+			const mark = e.target.closest('.mark-read');
+			if(mark){
+				const item = mark.closest('.notif-item');
+				item.classList.remove('notif-unread');
+				mark.remove();
+			}
+		});
+	</script>
+	<!-- Search Modal -->
+	<div id="searchModal" class="fixed inset-0 z-[999] hidden">
+		<div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+		<div class="absolute inset-x-0 top-0 mx-auto w-full max-w-sm p-4 animate-fade-in">
+			<div class="bg-white/10 border border-white/20 rounded-2xl p-4 shadow-xl relative">
+				<div class="flex items-center gap-2">
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+					<input id="searchInputModal" type="text" placeholder="Search..." class="flex-1 bg-transparent outline-none text-sm placeholder-gray-400" />
+					<button id="closeSearch" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Close search">
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+					</button>
+				</div>
+				<div id="searchResults" class="mt-4 max-h-72 overflow-y-auto space-y-2 text-sm"></div>
+				<div id="searchEmpty" class="mt-6 text-center text-xs text-gray-400">Type to start searching</div>
+			</div>
+		</div>
+	</div>
+	<style>
+		@keyframes fade-in {from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+		.animate-fade-in { animation: fade-in .25s ease; }
+		.no-scroll { overflow: hidden !important; }
+	</style>
+	<script>
+	(function(){
+		const openBtn = document.getElementById('openSearch');
+		const modal = document.getElementById('searchModal');
+		const closeBtn = document.getElementById('closeSearch');
+		const input = document.getElementById('searchInputModal');
+		const results = document.getElementById('searchResults');
+		const empty = document.getElementById('searchEmpty');
+		const sample = ['Ama Kusi','Kwame Boateng','Marketplace: Laptop','Post: Productivity tips','Esi Nyarko','Event: Hack Night'];
+		function open(){ modal.classList.remove('hidden'); document.body.classList.add('no-scroll'); setTimeout(()=>input.focus(),50);} 
+		function close(){ modal.classList.add('hidden'); document.body.classList.remove('no-scroll'); input.value=''; results.innerHTML=''; empty.classList.remove('hidden'); }
+		openBtn?.addEventListener('click', open);
+		closeBtn?.addEventListener('click', close);
+		modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
+		document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !modal.classList.contains('hidden')) close(); });
+		input.addEventListener('input', ()=>{
+			const q = input.value.trim().toLowerCase();
+			results.innerHTML='';
+			if(!q){ empty.classList.remove('hidden'); return; }
+			empty.classList.add('hidden');
+			const filtered = sample.filter(s=>s.toLowerCase().includes(q));
+			if(!filtered.length){ results.innerHTML='<div class="text-xs text-gray-400 text-center py-4">No matches</div>'; return; }
+			filtered.forEach(item=>{
+				const div = document.createElement('div');
+				div.className='px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 cursor-pointer';
+				div.textContent = item;
+				results.appendChild(div);
+			});
+		});
+	})();
+	</script>
+</body>
+</html>

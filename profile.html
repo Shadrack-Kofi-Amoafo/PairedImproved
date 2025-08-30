@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <title>Paired • Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <script>window.PAGE_ACTIVE='profile';</script>
+  <script src="shared-ui.js"></script>
+  <style>
+    .orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+    .orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+    .orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+    .orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+    @keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+    .no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .tab-active { background:linear-gradient(135deg,#f97316,#d946ef); }
+    .settings-panel { transition:max-height .4s cubic-bezier(.4,0,.2,1); }
+  /* Light theme improvements */
+  html.theme-light .tab-btn { color: var(--text-muted); }
+  .tab-btn.tab-active { color:#fff; }
+  html.theme-light .tab-btn { color: var(--text) !important; }
+  html.theme-light .tab-btn.tab-active { background:linear-gradient(135deg,#f97316,#d946ef); color:#000 !important; font-weight:600; }
+  /* Toggle outline visible in light theme */
+  html.theme-light #settingsPanel span.w-11 { box-shadow:0 0 0 1px var(--border-soft) inset; }
+  html.theme-light #settingsPanel input:focus + span, #settingsPanel input:focus + span { outline:2px solid var(--accent); outline-offset:2px; }
+  /* Search icon visibility */
+  html.theme-light #openSearch svg, html.theme-light #openSearch i { stroke: var(--text); color: var(--text); }
+  html.theme-light nav .text-white i { color: var(--text) !important; stroke: var(--text) !important; }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+  <!-- Orbs -->
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="w-full max-w-sm relative z-10" data-adjust-offset>
+
+    <!-- Profile Header -->
+    <section class="relative">
+      <div class="h-40 w-full bg-gradient-to-br from-orange-600/40 via-fuchsia-600/30 to-purple-700/30 border-b border-white/10 overflow-hidden">
+        <img src="https://picsum.photos/id/1040/800/400" alt="cover" class="w-full h-full object-cover mix-blend-overlay opacity-70">
+      </div>
+      <div class="px-4">
+        <div class="flex items-end gap-3 -mt-12">
+          <div class="relative w-24 h-24 rounded-full border-4 border-black overflow-hidden shadow-lg">
+            <img src="https://picsum.photos/id/1019/200/200" alt="avatar" class="w-full h-full object-cover">
+            <button class="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-black/70 backdrop-blur flex items-center justify-center border border-white/20 text-orange-400 hover:bg-orange-600/20" title="Update photo"><i data-lucide="camera" class="w-4 h-4"></i></button>
+          </div>
+          <div class="flex-1">
+            <h1 class="text-xl font-bold leading-tight">Your Name</h1>
+            <p class="text-[12px] text-gray-300">@username • Student • Tech Enthusiast</p>
+            <div class="flex gap-4 mt-2 text-[11px] text-gray-300">
+              <span><span class="font-semibold text-orange-400">642</span> Friends</span>
+              <span><span class="font-semibold text-orange-400">89</span> Posts</span>
+              <span><span class="font-semibold text-orange-400">134</span> Photos</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button id="editProfileBtn" class="flex-1 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm font-medium flex items-center justify-center gap-1"><i data-lucide="edit-3" class="w-4 h-4" href = "profileSetting.html"></i>Edit Profile</button>
+          <button id="settingsToggle" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center border border-white/10" title="Settings"><i data-lucide="settings" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Collapsible -->
+    <div id="settingsPanel" class="settings-panel overflow-hidden max-h-0">
+      <div class="mt-4 mx-4 bg-white/5 border border-white/10 rounded-xl p-4 space-y-4">
+        <h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="sliders" class="w-4 h-4"></i> Settings</h2>
+        <div class="space-y-3 text-[12px]">
+          <div class="flex items-center justify-between">
+            <span>Dark Mode</span>
+            <label class="inline-flex items-center cursor-pointer select-none">
+              <input type="checkbox" id="themeToggle" data-theme-toggle class="sr-only peer" />
+              <span class="w-11 h-6 bg-white/15 peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-pink-600 rounded-full relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+            </label>
+          </div>
+          <div class="flex items-center justify-between">
+            <span>Private Account</span>
+            <button class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-[11px]" id="privacyToggle">Off</button>
+          </div>
+          <div class="flex items-center justify-between">
+            <span>Two Factor Auth</span>
+            <button class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-[11px]" id="twoFactorToggle">Enable</button>
+          </div>
+          <div>
+            <label class="block mb-1">Bio</label>
+            <textarea id="bioInput" class="w-full bg-black/30 rounded-lg border border-white/10 p-2 text-[12px] h-20 resize-none focus:outline-none" placeholder="Write something about you..."></textarea>
+          </div>
+          <button id="saveSettings" class="w-full py-2 rounded-lg bg-gradient-to-r from-orange-600 to-pink-600 text-sm font-medium">Save Changes</button>
+          <button id="logoutBtn" class="w-full py-2 rounded-lg bg-red-600/80 hover:bg-red-600 text-sm font-medium">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mt-6 px-4">
+      <div class="flex bg-white/5 border border-white/10 rounded-full p-1 text-[12px] font-medium" id="profileTabs">
+        <button data-tab="posts" class="tab-btn flex-1 py-2 rounded-full tab-active">Posts</button>
+        <button data-tab="about" class="tab-btn flex-1 py-2 rounded-full hover:bg-white/10">About</button>
+        <button data-tab="friends" class="tab-btn flex-1 py-2 rounded-full hover:bg-white/10">Friends</button>
+        <button data-tab="photos" class="tab-btn flex-1 py-2 rounded-full hover:bg-white/10">Photos</button>
+      </div>
+    </div>
+
+    <!-- Tab Contents -->
+    <main class="px-4 pt-4 pb-16 space-y-6" id="tabContent">
+      <!-- Posts -->
+      <section data-content="posts" class="space-y-4">
+        <article class="bg-white/5 border border-white/10 backdrop-blur rounded-xl overflow-hidden">
+          <div class="flex items-start gap-3 px-4 pt-4">
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-500"><img src="https://picsum.photos/id/1019/80/80" class="w-full h-full object-cover" alt="avatar"/></div>
+            <div class="flex-1">
+              <p class="text-sm font-semibold">Your Name</p>
+              <p class="text-[11px] text-gray-400">1h ago · Public</p>
+            </div>
+            <button class="p-1 text-gray-400 hover:text-white"><i data-lucide="ellipsis"></i></button>
+          </div>
+          <div class="px-4 pt-3 text-sm leading-relaxed text-gray-200">First post on my new profile layout! 🚀</div>
+          <div class="px-4 pt-3 pb-2 text-[11px] flex items-center justify-between text-gray-400">
+            <div><span class="like-count font-medium text-orange-400">12</span> likes</div>
+            <div>3 comments · 1 share</div>
+          </div>
+          <div class="h-px bg-white/10 mx-4"></div>
+          <div class="flex px-2 py-1 text-[12px] font-medium">
+            <button class="post-like flex-1 flex items-center justify-center gap-1 py-2 rounded-md hover:bg-white/10 transition"><i data-lucide="thumbs-up" class="w-4 h-4"></i><span>Like</span></button>
+            <button class="flex-1 flex items-center justify-center gap-1 py-2 rounded-md hover:bg-white/10 transition"><i data-lucide="message-square" class="w-4 h-4"></i><span>Comment</span></button>
+            <button class="flex-1 flex items-center justify-center gap-1 py-2 rounded-md hover:bg-white/10 transition"><i data-lucide="share-2" class="w-4 h-4"></i><span>Share</span></button>
+          </div>
+        </article>
+      </section>
+      <!-- About -->
+      <section data-content="about" class="hidden space-y-4 text-[13px] leading-relaxed">
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3">
+          <h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> Overview</h2>
+          <p>Passionate about technology, community building, and lifelong learning. Always exploring new ideas.</p>
+          <div class="grid grid-cols-1 gap-2 text-[12px] text-gray-300">
+            <div class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-orange-400"></i><span>Cape Coast, Ghana</span></div>
+            <div class="flex items-center gap-2"><i data-lucide="graduation-cap" class="w-4 h-4 text-orange-400"></i><span>University of Cape Coast</span></div>
+            <div class="flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4 text-orange-400"></i><span>Intern • Software Development</span></div>
+            <div class="flex items-center gap-2"><i data-lucide="link" class="w-4 h-4 text-orange-400"></i><a class="underline hover:text-orange-400" href="https://example.com" target="_blank">example.com</a></div>
+          </div>
+        </div>
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3">
+          <h2 class="text-sm font-semibold flex items-center gap-2"><i data-lucide="trophy" class="w-4 h-4"></i> Highlights</h2>
+          <ul class="list-disc ml-5 space-y-1 text-[12px] text-gray-300">
+            <li>Hackathon Winner 2025</li>
+            <li>Community Volunteer</li>
+            <li>Open Source Contributor</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Friends -->
+      <section data-content="friends" class="hidden space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-semibold">Friends (9)</h2>
+          <a href="friends.html" class="text-[11px] text-orange-400 hover:underline">See all</a>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="text-center text-[11px]">
+            <div class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 mb-1"><img src="https://picsum.photos/id/1012/120/120" class="w-full h-full object-cover"/></div>
+            <p class="truncate">Ama Kusi</p>
+          </div>
+          <div class="text-center text-[11px]">
+            <div class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 mb-1"><img src="https://picsum.photos/id/1005/120/120" class="w-full h-full object-cover"/></div>
+            <p class="truncate">Kwame</p>
+          </div>
+          <div class="text-center text-[11px]">
+            <div class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 mb-1"><img src="https://picsum.photos/id/1018/120/120" class="w-full h-full object-cover"/></div>
+            <p class="truncate">Esi</p>
+          </div>
+          <div class="text-center text-[11px]">
+            <div class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 mb-1"><img src="https://picsum.photos/id/1025/120/120" class="w-full h-full object-cover"/></div>
+            <p class="truncate">Nyarko</p>
+          </div>
+          <div class="text-center text-[11px]">
+            <div class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 mb-1"><img src="https://picsum.photos/id/1027/120/120" class="w-full h-full object-cover"/></div>
+            <p class="truncate">Aisha</p>
+          </div>
+          <div class="text-center text-[11px]">
+            <div class="w-20 h-20 rounded-lg overflow-hidden border border-white/10 mb-1"><img src="https://picsum.photos/id/1047/120/120" class="w-full h-full object-cover"/></div>
+            <p class="truncate">Selorm</p>
+          </div>
+        </div>
+      </section>
+      <!-- Photos -->
+      <section data-content="photos" class="hidden space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-semibold">Photos</h2>
+          <button class="text-[11px] text-orange-400 hover:underline">Add</button>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <img src="https://picsum.photos/id/1040/300/300" class="w-full h-24 object-cover rounded-lg border border-white/10"/>
+          <img src="https://picsum.photos/id/1067/300/300" class="w-full h-24 object-cover rounded-lg border border-white/10"/>
+          <img src="https://picsum.photos/id/1074/300/300" class="w-full h-24 object-cover rounded-lg border border-white/10"/>
+          <img src="https://picsum.photos/id/1084/300/300" class="w-full h-24 object-cover rounded-lg border border-white/10"/>
+          <img src="https://picsum.photos/id/1015/300/300" class="w-full h-24 object-cover rounded-lg border border-white/10"/>
+          <img src="https://picsum.photos/id/1016/300/300" class="w-full h-24 object-cover rounded-lg border border-white/10"/>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    // Tabs logic
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabSections = document.querySelectorAll('[data-content]');
+    tabButtons.forEach(btn=> btn.addEventListener('click', ()=>{
+      tabButtons.forEach(b=> b.classList.remove('tab-active'));
+      btn.classList.add('tab-active');
+      const t = btn.dataset.tab;
+      tabSections.forEach(sec=> sec.classList.toggle('hidden', sec.dataset.content!==t));
+    }));
+    // Settings panel toggle
+    const settingsToggle = document.getElementById('settingsToggle');
+    const settingsPanel = document.getElementById('settingsPanel');
+    settingsToggle.addEventListener('click', ()=>{
+      if(settingsPanel.style.maxHeight && settingsPanel.style.maxHeight !== '0px'){
+        settingsPanel.style.maxHeight = '0px';
+      } else {
+        settingsPanel.style.maxHeight = settingsPanel.scrollHeight + 'px';
+      }
+    });
+    // Privacy toggle
+    const privacyToggle = document.getElementById('privacyToggle');
+    privacyToggle.addEventListener('click', ()=>{
+      const on = privacyToggle.classList.toggle('bg-orange-600');
+      privacyToggle.textContent = on ? 'On' : 'Off';
+    });
+    // Two factor toggle
+    const twoFactorToggle = document.getElementById('twoFactorToggle');
+    twoFactorToggle.addEventListener('click', ()=>{
+      const enabled = twoFactorToggle.classList.toggle('bg-green-600');
+      twoFactorToggle.textContent = enabled ? 'Enabled' : 'Enable';
+    });
+    // Like button functionality inside posts
+    document.addEventListener('click', (e)=>{
+      const likeBtn = e.target.closest('.post-like');
+      if(likeBtn){
+        const card = likeBtn.closest('article');
+        const countEl = card.querySelector('.like-count');
+        let count = parseInt(countEl.textContent,10);
+        const active = likeBtn.classList.toggle('text-orange-400');
+        likeBtn.classList.toggle('font-semibold', active);
+        likeBtn.querySelector('i')?.classList.toggle('fill-orange-500');
+        count += active ? 1 : -1; if(count < 0) count = 0; countEl.textContent = count;
+      }
+    });
+    // Logout (simple placeholder)
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      alert('Logged out (demo)');
+      window.location.href = 'index.html';
+    });
+    document.getElementById('editProfileBtn')?.addEventListener('click', (e)=>{
+  e.preventDefault();
+  window.location.href = 'profileSetting.html';
+});
+    // Theme toggle integrate with global settings
+    (function(){
+      const STORAGE_KEY='paired.settings';
+      const toggle=document.getElementById('themeToggle');
+      function load(){
+        let data={};
+        try{ data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){}
+        // darkMode true/undefined => dark (default). false => light
+        const isDark = data.darkMode !== false;
+        toggle.checked = isDark; // checked means dark mode
+        apply(isDark);
+      }
+      function apply(isDark){
+        if(isDark){ document.documentElement.classList.remove('theme-light'); }
+        else { document.documentElement.classList.add('theme-light'); }
+      }
+      toggle.addEventListener('change', ()=>{
+        let data={};
+        try{ data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){}
+        // store darkMode boolean (true for dark, false for light)
+        data.darkMode = toggle.checked; // checked => dark
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        apply(toggle.checked);
+      });
+      load();
+    })();
+  </script>
+  <!-- Search Modal -->
+  <div id="searchModal" class="fixed inset-0 z-[999] hidden">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="absolute inset-x-0 top-0 mx-auto w-full max-w-sm p-4 animate-fade-in">
+      <div class="bg-white/10 border border-white/20 rounded-2xl p-4 shadow-xl relative">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input id="searchInputModal" type="text" placeholder="Search..." class="flex-1 bg-transparent outline-none text-sm placeholder-gray-400" />
+          <button id="closeSearch" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10" aria-label="Close search">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div id="searchResults" class="mt-4 max-h-72 overflow-y-auto space-y-2 text-sm"></div>
+        <div id="searchEmpty" class="mt-6 text-center text-xs text-gray-400">Type to start searching</div>
+      </div>
+    </div>
+  </div>
+  <style>
+    @keyframes fade-in {from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+    .animate-fade-in { animation: fade-in .25s ease; }
+    .no-scroll { overflow: hidden !important; }
+  </style>
+  <script>
+    (function(){
+      const openBtn = document.getElementById('openSearch');
+      const modal = document.getElementById('searchModal');
+      const closeBtn = document.getElementById('closeSearch');
+      const input = document.getElementById('searchInputModal');
+      const results = document.getElementById('searchResults');
+      const empty = document.getElementById('searchEmpty');
+      const sample = ['Posts','Friends','Photos','Settings','Profile','Marketplace'];
+      function open(){ modal.classList.remove('hidden'); document.body.classList.add('no-scroll'); setTimeout(()=>input.focus(),50);} 
+      function close(){ modal.classList.add('hidden'); document.body.classList.remove('no-scroll'); input.value=''; results.innerHTML=''; empty.classList.remove('hidden'); }
+      openBtn?.addEventListener('click', open);
+      closeBtn?.addEventListener('click', close);
+      modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !modal.classList.contains('hidden')) close(); });
+      input.addEventListener('input', ()=>{
+        const q = input.value.trim().toLowerCase();
+        results.innerHTML='';
+        if(!q){ empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        const filtered = sample.filter(s=>s.toLowerCase().includes(q));
+        if(!filtered.length){ results.innerHTML='<div class="text-xs text-gray-400 text-center py-4">No matches</div>'; return; }
+        filtered.forEach(item=>{
+          const div = document.createElement('div');
+          div.className='px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 cursor-pointer';
+          div.textContent = item;
+          results.appendChild(div);
+        });
+      });
+    })();
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Bookmarks • Paired</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <script>window.PAGE_ACTIVE='profile';</script>
+  <script src="shared-ui.js"></script>
+  <style>
+    .orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:.6; animation:float 20s infinite ease-in-out; }
+    .orb1 { width:300px; height:300px; background:orange; top:5%; left:5%; animation-duration:25s; }
+    .orb2 { width:250px; height:250px; background:purple; bottom:8%; right:5%; animation-duration:22s; }
+    .orb3 { width:220px; height:220px; background:teal; top:35%; left:50%; animation-duration:28s; }
+    @keyframes float { 0%,100% { transform:translateY(0) translateX(0);} 50% { transform:translateY(-30px) translateX(30px);} }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen overflow-y-auto overflow-x-hidden relative flex justify-center">
+  <div class="absolute inset-0 -z-10">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+  <main class="w-full max-w-sm mx-auto relative z-10 pb-16 px-4" data-adjust-offset>
+    <h1 class="text-lg font-semibold pt-4">Saved Bookmarks</h1>
+    <p class="text-[11px] text-gray-400 mb-4">Posts you've saved for later.</p>
+    <div id="bookmarkList" class="space-y-4"></div>
+    <div id="bookmarkEmpty" class="text-center text-xs text-gray-400 py-10 hidden">No bookmarks yet. Tap 'Save' on a post.</div>
+  </main>
+  <script>
+    lucide.createIcons();
+    function render(){
+      const listEl=document.getElementById('bookmarkList');
+      const empty=document.getElementById('bookmarkEmpty');
+      const data=window.PairedData?.counts? window.PairedData : null;
+      let raw=[]; try{ const d=JSON.parse(localStorage.getItem('paired.data.v1')||'{}'); raw=d.bookmarks||[]; }catch(e){}
+      listEl.innerHTML='';
+      if(!raw.length){ empty.classList.remove('hidden'); return; } else empty.classList.add('hidden');
+      raw.forEach(b=>{
+        if(b.type==='post'){
+          const postEl=document.querySelector(`article.post[data-post-id='${b.id}']`);
+          let html='';
+          if(postEl){ html=postEl.outerHTML; }
+          else { html=`<article class='post bg-white/5 border border-white/10 backdrop-blur rounded-xl overflow-hidden p-4 text-xs text-gray-300'>Original post not found (ID ${b.id})</article>`; }
+          const wrap=document.createElement('div');
+          wrap.innerHTML=html;
+          // ensure bookmark button present
+          const actions=wrap.querySelector('.flex.px-2.py-1');
+          if(actions && !actions.querySelector('.post-bookmark')){
+            const bm=document.createElement('button'); bm.className='post-bookmark flex-1 flex items-center justify-center gap-1 py-2 rounded-md hover:bg-white/10 transition'; bm.innerHTML="<i data-lucide='bookmark-check' class='w-4 h-4'></i><span>Saved</span>"; actions.appendChild(bm);
+          }
+          listEl.appendChild(wrap.firstElementChild);
+        }
+      });
+      if(window.lucide) lucide.createIcons();
+    }
+    document.addEventListener('click', e=>{ const bm=e.target.closest('.post-bookmark'); if(!bm) return; const post=bm.closest('article.post'); const id=post?.getAttribute('data-post-id'); const added=window.PairedData?.toggleBookmark?.({type:'post', id}); bm.querySelector('span').textContent= added?'Saved':'Save'; bm.querySelector('i')?.setAttribute('data-lucide', added?'bookmark-check':'bookmark'); if(window.lucide) lucide.createIcons(); render(); window.PairedUpdateBadges&&window.PairedUpdateBadges(); });
+    render();
+  </script>
+</body>
+</html>

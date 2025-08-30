@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile Settings • Paired</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <script>window.PAGE_ACTIVE='profile';</script>
+  <script src="shared-ui.js"></script>
+  <style>
+    .orb-lemon { background:radial-gradient(circle,rgba(255,255,0,0.35) 0%,rgba(0,0,0,0) 70%); filter:blur(60px);}
+    .orb-violet { background:radial-gradient(circle,rgba(186,85,211,0.35) 0%,rgba(0,0,0,0) 70%); filter:blur(60px);}
+    .switch { position:relative;display:inline-block;width:42px;height:22px;}
+    .switch input {opacity:0;width:0;height:0;}
+    .slider {position:absolute;inset:0;background:#475569;border-radius:999px;cursor:pointer;transition:.25s;}
+    .slider:before {content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.25s;}
+    input:checked + .slider {background:#16a34a;}
+    input:checked + .slider:before {transform:translateX(20px);}
+    .tag {background:#334155;border:1px solid #475569;font-size:.65rem;padding:.25rem .55rem;border-radius:999px;display:flex;align-items:center;gap:.35rem;}
+    .tag button {line-height:1;}
+  </style>
+</head>
+<body class="bg-black text-gray-100 min-h-full relative flex justify-center overflow-x-hidden">
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="absolute top-10 left-10 w-72 h-72 orb-lemon rounded-full"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 orb-violet rounded-full"></div>
+  </div>
+
+  <div class="w-full max-w-sm relative z-10" data-adjust-offset>
+  <div class="px-4 pt-4 flex items-center gap-3 text-sm font-semibold">
+    <span class="text-lg">Profile Settings</span>
+    <div class="ml-auto flex items-center gap-2">
+      <button id="discardBtn" class="text-[11px] px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30" disabled>Discard</button>
+      <button id="saveBtn" class="text-[11px] px-4 py-1.5 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30" disabled>Save</button>
+    </div>
+  </div>
+
+  <main class="pt-4 pb-24 px-4 space-y-8">
+    <!-- Media -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Profile Media</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="space-y-3">
+          <p class="text-xs font-medium text-gray-400 uppercase">Avatar</p>
+            <div class="flex items-center gap-4">
+              <div class="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-white/10">
+                <img id="avatarPreview" src="https://via.placeholder.com/150x150.png?text=Avatar" class="w-full h-full object-cover" alt="">
+                <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 hover:opacity-100 cursor-pointer text-[10px] tracking-wide">
+                  Change
+                  <input type="file" id="avatarInput" accept="image/*" class="hidden">
+                </label>
+              </div>
+              <button id="removeAvatar" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Remove</button>
+            </div>
+        </div>
+        <div class="space-y-3">
+          <p class="text-xs font-medium text-gray-400 uppercase">Cover Photo</p>
+          <div class="relative w-full h-28 rounded-xl overflow-hidden ring-2 ring-white/10">
+            <img id="coverPreview" src="https://via.placeholder.com/640x240.png?text=Cover" class="w-full h-full object-cover" alt="">
+            <label class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 cursor-pointer text-[10px] tracking-wide">
+              Change
+              <input type="file" id="coverInput" accept="image/*" class="hidden">
+            </label>
+          </div>
+          <div class="flex gap-2">
+            <button id="removeCover" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20">Remove</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Basic Info -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Basic Info</h2>
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Full Name</label>
+          <input data-field="fullName" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="Your Name">
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Username</label>
+          <div class="flex">
+            <input data-field="username" class="flex-1 bg-white/10 rounded-l-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="username">
+            <button id="checkUser" type="button" class="px-3 text-xs rounded-r-lg bg-indigo-600 hover:bg-indigo-500">Check</button>
+          </div>
+          <p id="userStatus" class="text-[10px] mt-1"></p>
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Pronouns</label>
+          <input data-field="pronouns" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="e.g. she/her">
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Gender</label>
+          <select data-field="gender" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50">
+            <option value="">Prefer not to say</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Non-binary</option>
+            <option>Custom</option>
+          </select>
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Birthday</label>
+          <input type="date" data-field="birthday" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50">
+          <div class="flex items-center justify-between mt-1">
+            <span class="text-[10px] text-gray-400">Show birth year</span>
+            <label class="switch">
+              <input type="checkbox" data-field="showBirthYear">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Location</label>
+          <input data-field="location" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="City, Country">
+        </div>
+      </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-3">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Bio</h2>
+      <textarea data-field="bio" maxlength="180" rows="4" class="w-full bg-white/10 rounded-xl px-4 py-3 text-sm resize-none focus:outline-none focus:ring ring-indigo-500/50" placeholder="Write a short bio (max 180 chars)"></textarea>
+      <div class="flex justify-between text-[10px] text-gray-400">
+        <span id="bioCount">0 / 180</span>
+        <label class="flex items-center gap-2">
+          <span>Show on profile</span>
+          <label class="switch">
+            <input type="checkbox" data-field="bioVisible" checked>
+            <span class="slider"></span>
+          </label>
+        </label>
+      </div>
+    </section>
+
+    <!-- Professional & Education -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Professional & Education</h2>
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Occupation</label>
+          <input data-field="occupation" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="Role / Title">
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Organization</label>
+          <input data-field="organization" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="Company / Org">
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Education</label>
+          <input data-field="education" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="School / Degree">
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs uppercase tracking-wide text-gray-400">Website</label>
+          <input data-field="website" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="https://example.com">
+        </div>
+      </div>
+    </section>
+
+    <!-- Interests & Social -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Interests & Social Links</h2>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs uppercase tracking-wide text-gray-400">Add Interest</label>
+          <div class="flex gap-2 mt-1">
+            <input id="interestInput" class="flex-1 bg-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring ring-indigo-500/50" placeholder="e.g. Photography">
+            <button id="addInterest" type="button" class="px-3 text-xs rounded-lg bg-indigo-600 hover:bg-indigo-500">Add</button>
+          </div>
+          <div id="interestTags" class="flex flex-wrap gap-2 mt-3"></div>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="space-y-1">
+            <label class="text-xs uppercase tracking-wide text-gray-400">Twitter</label>
+            <input data-field="twitter" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm" placeholder="@handle">
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs uppercase tracking-wide text-gray-400">Instagram</label>
+            <input data-field="instagram" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm" placeholder="@handle">
+          </div>
+            <div class="space-y-1">
+            <label class="text-xs uppercase tracking-wide text-gray-400">LinkedIn</label>
+            <input data-field="linkedin" class="w-full bg-white/10 rounded-lg px-3 py-2 text-sm" placeholder="Profile URL">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visibility & Preferences -->
+    <section class="bg-white/5 rounded-2xl border border-white/10 p-5 backdrop-blur-md space-y-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300">Visibility & Preferences</h2>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-sm">Show Followers Count</p>
+          <label class="switch">
+            <input type="checkbox" data-field="showFollowers" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-sm">Show Joined Date</p>
+          <label class="switch">
+            <input type="checkbox" data-field="showJoined" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-sm">Allow Tagging</p>
+          <label class="switch">
+            <input type="checkbox" data-field="allowTagging" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-sm">Messages From Non‑Friends</p>
+          <label class="switch">
+            <input type="checkbox" data-field="openMessages">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Danger Zone -->
+    <section class="bg-red-600/10 rounded-2xl border border-red-600/30 p-5 backdrop-blur-md space-y-4">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-red-300">Danger Zone</h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="text-xs text-red-200/80 leading-relaxed">
+          Delete your account and all associated data. This action is irreversible.
+        </div>
+        <button id="deleteAccount" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-sm font-medium">
+          Delete Account
+        </button>
+      </div>
+    </section>
+  </main>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'paired.profileSettings';
+    const fields = document.querySelectorAll('[data-field]');
+    const saveBtn = document.getElementById('saveBtn');
+    const discardBtn = document.getElementById('discardBtn');
+    const bio = document.querySelector('[data-field="bio"]');
+    const bioCount = document.getElementById('bioCount');
+    const interestInput = document.getElementById('interestInput');
+    const addInterestBtn = document.getElementById('addInterest');
+    const interestTags = document.getElementById('interestTags');
+    let originalData = {};
+
+    function serialize() {
+      const data = {};
+      fields.forEach(f => {
+        if (f.type === 'checkbox') data[f.dataset.field] = f.checked;
+        else data[f.dataset.field] = f.value;
+      });
+      data.interests = Array.from(interestTags.querySelectorAll('[data-tag]')).map(t => t.dataset.tag);
+      data.avatar = document.getElementById('avatarPreview').src;
+      data.cover = document.getElementById('coverPreview').src;
+      return data;
+    }
+    function load() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        originalData = stored;
+        fields.forEach(f => {
+          if (stored[f.dataset.field] !== undefined) {
+            if (f.type === 'checkbox') f.checked = stored[f.dataset.field];
+            else f.value = stored[f.dataset.field];
+          }
+        });
+        if (stored.interests) {
+          stored.interests.forEach(addTagElement);
+        }
+        if (stored.avatar) document.getElementById('avatarPreview').src = stored.avatar;
+        if (stored.cover) document.getElementById('coverPreview').src = stored.cover;
+        updateBioCount();
+        setDirty(false);
+      } catch(e){}
+    }
+    function save() {
+      const data = serialize();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      originalData = data;
+      setDirty(false);
+    }
+    function setDirty(state) {
+      saveBtn.disabled = !state;
+      discardBtn.disabled = !state;
+    }
+    function isDirty() {
+      return JSON.stringify(serialize()) !== JSON.stringify(originalData);
+    }
+    function updateBioCount() {
+      bioCount.textContent = (bio.value.length) + ' / ' + bio.maxLength;
+    }
+    function addTagElement(tag) {
+      if (!tag) return;
+      if (interestTags.querySelector('[data-tag="'+tag.toLowerCase()+'"]')) return;
+      const el = document.createElement('span');
+      el.className = 'tag';
+      el.dataset.tag = tag.toLowerCase();
+      el.innerHTML = '<span>'+tag+'</span><button type="button" aria-label="Remove" class="text-gray-400 hover:text-red-400 text-xs">&times;</button>';
+      el.querySelector('button').addEventListener('click', () => { el.remove(); onChange(); });
+      interestTags.appendChild(el);
+    }
+    function onChange() {
+      setDirty(isDirty());
+    }
+    bio.addEventListener('input', () => { updateBioCount(); onChange(); });
+
+    addInterestBtn.addEventListener('click', () => {
+      const val = interestInput.value.trim();
+      if (val) {
+        addTagElement(val);
+        interestInput.value = '';
+        onChange();
+      }
+    });
+    interestInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addInterestBtn.click();
+      }
+    });
+
+    fields.forEach(f => f.addEventListener('input', onChange));
+    fields.forEach(f => f.addEventListener('change', onChange));
+
+    // Username availability mock
+    document.getElementById('checkUser').addEventListener('click', () => {
+      const u = document.querySelector('[data-field="username"]').value.trim();
+      const status = document.getElementById('userStatus');
+      if (!u) { status.textContent = 'Enter a username.'; status.className='text-[10px] text-yellow-400'; return; }
+      setTimeout(() => {
+        const taken = ['admin','test','user','demo'];
+        if (taken.includes(u.toLowerCase())) {
+          status.textContent = 'Unavailable';
+          status.className = 'text-[10px] text-red-400';
+        } else {
+          status.textContent = 'Available';
+          status.className = 'text-[10px] text-green-400';
+        }
+      }, 300);
+    });
+
+    // Avatar & Cover uploads
+    function handleImage(inputEl, imgEl) {
+      const file = inputEl.files && inputEl.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => { imgEl.src = e.target.result; onChange(); };
+      reader.readAsDataURL(file);
+    }
+    document.getElementById('avatarInput').addEventListener('change', e => handleImage(e.target, document.getElementById('avatarPreview')));
+    document.getElementById('coverInput').addEventListener('change', e => handleImage(e.target, document.getElementById('coverPreview')));
+    document.getElementById('removeAvatar').addEventListener('click', () => { document.getElementById('avatarPreview').src='https://via.placeholder.com/150x150.png?text=Avatar'; onChange();});
+    document.getElementById('removeCover').addEventListener('click', () => { document.getElementById('coverPreview').src='https://via.placeholder.com/640x240.png?text=Cover'; onChange();});
+
+    saveBtn.addEventListener('click', save);
+    discardBtn.addEventListener('click', () => { load(); });
+
+    window.addEventListener('beforeunload', e => {
+      if (isDirty()) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
+    document.getElementById('deleteAccount').addEventListener('click', () => {
+      if (confirm('Are you sure? This cannot be undone.')) {
+        localStorage.removeItem(STORAGE_KEY);
+        alert('Account deletion placeholder.');
+      }
+    });
+
+  // ...existing code...
+    load();
+// ...existing code...
+  </script>
+</body>
+</html>
